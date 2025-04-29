@@ -57,7 +57,6 @@ sequenceDiagram
     participant FileView
 
     User->>MainController: run(claim, data_folder)
-
     MainController->>ConsoleView: print_info
     MainController->>QAService: generate_questions(claim)
     QAService-->>MainController: questions
@@ -99,5 +98,4 @@ sequenceDiagram
     MainController->>JudgeService: decide
     JudgeService-->>MainController: verdict
     MainController->>FileView: write_text
-
 ```
