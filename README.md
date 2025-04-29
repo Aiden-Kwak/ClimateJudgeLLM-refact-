@@ -58,52 +58,46 @@ sequenceDiagram
 
     User->>MainController: run(claim, data_folder)
 
-    MainController->>ConsoleView: print_info("세부 질문 생성 중...")
+    MainController->>ConsoleView: print_info
     MainController->>QAService: generate_questions(claim)
     QAService-->>MainController: questions
 
-    MainController->>ConsoleView: print_info("리소스 임베딩 중... 폴더=data_folder")
+    MainController->>ConsoleView: print_info
     MainController->>RagIndexService: embed_resources(data_folder)
     RagIndexService-->>MainController: resource
 
-    MainController->>ConsoleView: print_info("배심원단 평가 중...")
+    MainController->>ConsoleView: print_info
     MainController->>JuryService: evaluate(questions, resource, claim)
     JuryService-->>MainController: jury_results
-    MainController->>FileView: write_json("jury_results.json", jury_results)
+    MainController->>FileView: write_json
 
-    MainController->>ConsoleView: print_info("변호사 의견 생성 중...")
-    MainController->>LawyerService: analyze("jury_results.json", claim, "gpt-3.5-turbo")
+    MainController->>ConsoleView: print_info
+    MainController->>LawyerService: analyze
     LawyerService-->>MainController: lawyer_text
-    MainController->>FileView: write_text("results/lawyer_results.txt", lawyer_text)
+    MainController->>FileView: write_text
 
-    MainController->>ConsoleView: print_info("검사 의견 생성 중...")
-    MainController->>ProsecutorService: analyze("jury_results.json", claim, "gpt-3.5-turbo")
+    MainController->>ConsoleView: print_info
+    MainController->>ProsecutorService: analyze
     ProsecutorService-->>MainController: prosecutor_text
-    MainController->>FileView: write_text("results/prosecutor_results.txt", prosecutor_text)
+    MainController->>FileView: write_text
 
-    MainController->>ConsoleView: print_info("검사가 변호사의 의견을 검토 중...")
-    MainController->>ProsecutorService: reply_brief("results/lawyer_results.txt", claim, "gpt-3.5-turbo")
+    MainController->>ConsoleView: print_info
+    MainController->>ProsecutorService: reply_brief
     ProsecutorService-->>MainController: prosecutor_reply
-    MainController->>FileView: write_text("reply_brief/prosecutor_reply_brief.txt", prosecutor_reply)
+    MainController->>FileView: write_text
 
-    MainController->>ConsoleView: print_info("변호사가 검사의 리플라이 브리프를 검토 중...")
-    MainController->>LawyerService: reply_brief("reply_brief/prosecutor_reply_brief.txt", claim, "gpt-3.5-turbo")
+    MainController->>ConsoleView: print_info
+    MainController->>LawyerService: reply_brief
     LawyerService-->>MainController: lawyer_reply
-    MainController->>FileView: write_text("reply_brief/lawyer_reply_brief.txt", lawyer_reply)
+    MainController->>FileView: write_text
 
-    MainController->>ConsoleView: print_info("판사 의견 생성 중...")
-    MainController->>JudgeService: prepare_input(
-        jury_path="jury_results.json",
-        lawyer_results_path="results/lawyer_results.txt",
-        prosecutor_results_path="results/prosecutor_results.txt",
-        lawyer_reply_path="reply_brief/lawyer_reply_brief.txt",
-        prosecutor_reply_path="reply_brief/prosecutor_reply_brief.txt"
-    )
+    MainController->>ConsoleView: print_info
+    MainController->>JudgeService: prepare_input
     JudgeService-->>MainController: judge_input
-    MainController->>FileView: write_json("judge_input.json", judge_input)
+    MainController->>FileView: write_json
 
-    MainController->>JudgeService: decide("judge_input.json", "gpt-3.5-turbo")
+    MainController->>JudgeService: decide
     JudgeService-->>MainController: verdict
-    MainController->>FileView: write_text("judge_verdict.txt", verdict)
+    MainController->>FileView: write_text
 
 ```
