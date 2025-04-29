@@ -1,0 +1,101 @@
+@startuml
+skinparam packageStyle rect
+
+package controller {
+  class MainController {
+    +__init__()
+    +run(claim, data_folder)
+  }
+}
+
+package model {
+  interface LLMClient
+  class LLMModel {
+    +call_deepseek(prompt, model)
+    +call_openai(prompt, model)
+    +parse_response(response)
+  }
+  LLMModel ..|> LLMClient
+}
+
+package service {
+  class BaseAgentService {
+    -llm : LLMClient
+    +_invoke(prompt, model_type)
+  }
+  class RagIndexService {
+    +__init__(...)
+    +embed_resources(folder_name)
+    +query(resource, question, evidence_num)
+  }
+  class QAService {
+    +__init__(llm)
+    +generate_questions(claim)
+  }
+  class JuryService {
+    +__init__(rag)
+    +evaluate(questions, resource, claim)
+  }
+  class LawyerService {
+    +__init__(llm)
+    +analyze(...)
+    +reply_brief(...)
+  }
+  class ProsecutorService {
+    +__init__(llm)
+    +analyze(...)
+    +reply_brief(...)
+  }
+  class JudgeService {
+    +__init__(llm)
+    +prepare_input(...)
+    +decide(judge_input_path, model_type)
+  }
+
+  BaseAgentService <|-- LawyerService
+  BaseAgentService <|-- ProsecutorService
+  BaseAgentService <|-- JudgeService
+
+  RagIndexService ..> LLMModel : uses
+  QAService --> LLMModel
+  JuryService --> RagIndexService
+
+  package prompt_builders {
+    class LawyerPromptBuilder {
+      +build_analysis_prompt(...)
+      +build_reply_brief_prompt(...)
+    }
+    class ProsecutorPromptBuilder {
+      +build_analysis_prompt(...)
+      +build_reply_brief_prompt(...)
+    }
+    class JudgePromptBuilder {
+      +build_decision_prompt(...)
+    }
+    LawyerService --> LawyerPromptBuilder
+    ProsecutorService --> ProsecutorPromptBuilder
+    JudgeService --> JudgePromptBuilder
+  }
+}
+
+package view {
+  class ConsoleView {
+    +print_info(msg)
+    +print_error(msg)
+  }
+  class FileView {
+    +write_json(path, data)
+    +write_text(path, content)
+  }
+}
+
+MainController --> LLMModel
+MainController --> RagIndexService
+MainController --> QAService
+MainController --> JuryService
+MainController --> LawyerService
+MainController --> ProsecutorService
+MainController --> JudgeService
+MainController ..> ConsoleView
+MainController ..> FileView
+@enduml
