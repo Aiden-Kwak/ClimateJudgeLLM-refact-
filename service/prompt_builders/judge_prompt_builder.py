@@ -15,16 +15,24 @@ class JudgePromptBuilder:
         2. Identify which side has presented a stronger case, supported by specific reasoning and evidence.
         3. Conclude with a logical and fair judgment, stating whether the client’s claim is valid or not.
 
+        Finally, return your entire response **as valid JSON** matching exactly this schema:
+
+        {{
+          "summary":    "string",
+          "defense": {{
+            "strengths":   ["string", …],
+            "weaknesses":  ["string", …]
+          }},
+          "prosecution": {{
+            "strengths":   ["string", …],
+            "weaknesses":  ["string", …]
+          }},
+          "verdict":    "string"
+        }}
+
         You are only allowed to base your analysis on the following provided document. Avoid using external information.
 
         =============== Provided Document (Start) ===============
         {json.dumps(judge_input, ensure_ascii=False, indent=4)}
         =============== Provided Document (End) ===============
-
-        Your response must be structured as follows:
-        1. **Summary of the Case**: Provide an objective summary of the client’s claim and the arguments presented by both sides.
-        2. **Analysis**:
-        - Strengths and weaknesses of the defense’s arguments.
-        - Strengths and weaknesses of the prosecution’s arguments.
-        3. **Verdict**: State your final judgment and provide a concise explanation of your reasoning.
         """

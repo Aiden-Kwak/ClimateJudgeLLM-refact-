@@ -1,6 +1,7 @@
 # controller/main_controller.py
 
 import os
+import json
 from dotenv import load_dotenv
 
 from model.llm_model import LLMModel
@@ -12,6 +13,7 @@ from service.prosecutor_service import ProsecutorService
 from service.judge_service import JudgeService
 from view.console_view import ConsoleView
 from view.file_view import FileView
+from service.pdf_service import VerdictPdfService
 
 class MainController:
     def __init__(self):
@@ -111,3 +113,29 @@ class MainController:
             model_type="gpt-3.5-turbo"
         )
         FileView.write_text("judge_verdict.txt", verdict)
+
+        # 8) 판결문 PDF 생성
+        ConsoleView.print_info("판결문 PDF 생성 중...")
+
+        # verdict 텍스트를 JSON으로 파싱
+        try:
+            verdict_json = json.loads(verdict)
+        except json.JSONDecodeError:
+            ConsoleView.print_info("[WARN] Judge response is not JSON. 기본값 사용.")
+            verdict_json = {}
+
+        # JSON 스키마에 맞춰 꺼내기
+        summary = verdict_json.get("summary", "")
+        defense = verdict_json.get("defense", {}) or {}
+        prosecution = verdict_json.get("prosecution", {}) or {}
+
+        context = {
+            "summary": summary,
+            "defense_strengths":   defense.get("strengths", []),
+            "defense_weaknesses":  defense.get("weaknesses", []),
+            "prosecution_strengths":  prosecution.get("strengths", []),
+            "prosecution_weaknesses": prosecution.get("weaknesses", []),
+            "verdict": verdict_json.get("verdict", verdict)
+        }
+
+        VerdictPdfService(context)
