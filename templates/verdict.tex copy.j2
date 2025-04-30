@@ -1,0 +1,46 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{kotex}
+\title{판결문}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section*{Summary of the Case}
+{{ summary }}
+
+\section*{Analysis}
+\subsection*{Defense}
+\textbf{Strengths:}
+\begin{itemize}
+{% for s in defense_strengths %}
+  \item {{ s }}
+{% endfor %}
+\end{itemize}
+
+\textbf{Weaknesses:}
+\begin{itemize}
+{% for w in defense_weaknesses %}
+  \item {{ w }}
+{% endfor %}
+\end{itemize}
+
+\subsection*{Prosecution}
+\textbf{Strengths:}
+\begin{itemize}
+{% for s in prosecution_strengths %}
+  \item {{ s }}
+{% endfor %}
+\end{itemize}
+
+\textbf{Weaknesses:}
+\begin{itemize}
+{% for w in prosecution_weaknesses %}
+  \item {{ w }}
+{% endfor %}
+\end{itemize}
+
+\section*{Verdict}
+{{ verdict }}
+\end{document}

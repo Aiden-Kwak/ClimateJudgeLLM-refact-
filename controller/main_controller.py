@@ -1,6 +1,7 @@
 # controller/main_controller.py
 
 import os
+import json
 from dotenv import load_dotenv
 
 from model.llm_model import LLMModel
@@ -12,6 +13,7 @@ from service.prosecutor_service import ProsecutorService
 from service.judge_service import JudgeService
 from view.console_view import ConsoleView
 from view.file_view import FileView
+from service.pdf_service import VerdictPdfService
 
 class MainController:
     def __init__(self):
@@ -111,3 +113,46 @@ class MainController:
             model_type="gpt-3.5-turbo"
         )
         FileView.write_text("judge_verdict.txt", verdict)
+
+        # 8) 판결문 PDF 생성
+        ConsoleView.print_info("판결문 PDF 생성 중...")
+
+        # verdict 텍스트를 JSON으로 파싱
+        try:
+            verdict_json = json.loads(verdict)
+        except json.JSONDecodeError:
+            ConsoleView.print_info("[WARN] Judge response is not JSON. 기본값 사용.")
+            verdict_json = {}
+
+        # JSON 스키마에 맞춰 꺼내기
+        summary              = verdict_json.get("summary", "")
+        original_excerpt     = verdict_json.get("original_excerpt", summary)
+        source_file          = verdict_json.get("source_file", "")
+        source_page          = verdict_json.get("source_page", "")
+        background           = verdict_json.get("background", [])
+        original_defense     = verdict_json.get("original_defense", [])
+        defense_rebuttal     = verdict_json.get("defense_rebuttal", [])
+        original_prosecution = verdict_json.get("original_prosecution", [])
+        prosecution_rebuttal = verdict_json.get("prosecution_rebuttal", [])
+        sources              = verdict_json.get("sources", [])
+        verdict_text         = verdict_json.get("verdict", verdict)
+        classification       = verdict_json.get("classification", "")
+
+        context = {
+            "executive_summary":    verdict_json.get("executive_summary", ""),
+            "summary":              summary,
+            "original_excerpt":     original_excerpt,
+            "source_file":          source_file,
+            "source_page":          source_page,
+            "background":           background,
+            "original_defense":     original_defense,
+            "defense_rebuttal":     defense_rebuttal,
+            "original_prosecution": original_prosecution,
+            "prosecution_rebuttal": prosecution_rebuttal,
+            "sources":              sources,
+            "verdict":              verdict_text,
+            "classification":       classification
+        }
+
+
+        VerdictPdfService(context)
