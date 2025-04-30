@@ -9,10 +9,13 @@ class ProsecutorPromptBuilder:
 
         The client’s claim is: "{claim}"
 
+<<<<<<< HEAD
         For every quote or piece of evidence you use, append the precise source in this format:
         > "인용문" (doc_name, p.X)
         Where `p.X` 는 해당 인용문이 나온 페이지 번호입니다.
 
+=======
+>>>>>>> b16d446e3ab0ada0c22e1bb4d0818ce05047e3a7
         1. Carefully review the document and identify:
         - Specific evidence that weakens the client’s claim, including any gaps, inconsistencies, or contradictions in the client’s arguments. Provide direct references to the original document, including page numbers and relevant quotes.
         - Strengths in the opposing arguments and evidence, highlighting how they counter the client’s position. Reference the document and page numbers where applicable.
