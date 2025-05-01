@@ -14,6 +14,7 @@ from service.judge_service import JudgeService
 from view.console_view import ConsoleView
 from view.file_view import FileView
 from service.pdf_service import VerdictPdfService
+from service.jury_clean_service import JuryCleanService
 
 class MainController:
     def __init__(self):
@@ -31,6 +32,7 @@ class MainController:
         self.lawyer     = LawyerService(self.llm)
         self.prosecutor = ProsecutorService(self.llm)
         self.judge      = JudgeService(self.llm)
+        self.jury_clean = JuryCleanService(self.llm)
 
     def run(self, claim: str, data_folder: str):
         # Ensure output dirs exist
@@ -49,6 +51,16 @@ class MainController:
         ConsoleView.print_info("배심원단 평가 중...")
         jury_results = self.jury.evaluate(questions, resource, claim)
         FileView.write_json("jury_results.json", jury_results)
+
+        # 3-1) 정제
+        ConsoleView.print_info("배심원단 평가 정제 중...")
+        jury_clean_response = self.jury_clean._clean("jury_results.json", model_type="gpt-3.5-turbo")
+        try:
+            jury_clean_results = json.loads(jury_clean_response)
+            FileView.write_json("jury_results.json", jury_clean_results)
+        except json.JSONDecodeError:
+            ConsoleView.print_info("[ERROR] 정제된 결과가 올바른 JSON 형식이 아닙니다. 원본을 유지합니다.")
+            print(jury_clean_response)
 
         # 4) 변호사 의견
         ConsoleView.print_info("변호사 의견 생성 중...")
