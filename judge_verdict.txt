@@ -1,85 +1,79 @@
 {
-    "executive_summary": "Based on the evaluation of the claim that global warming is not progressing as predicted due to increased CO2 absorption by plants, the defense argues that climate change is a hoax. The prosecution challenges this claim by highlighting the lack of direct evidence supporting the assertion and the consensus in the scientific community regarding anthropogenic climate change.",
-    "summary": "The defense asserts that global warming trends are not following climate model predictions due to plants absorbing more CO2, concluding that climate change is a hoax. The prosecution counters this by pointing out the lack of direct evidence supporting this claim and emphasizing the strong scientific consensus on human-induced climate change.",
-    "original_excerpt": "This document presents the jury's analysis to evaluate the original claim: '지구 온난화는 기후 모델이 예측한 만큼 진행되지 않고 있다. 이는 식물의 광합성이 예상보다 더 많은 CO2를 흡수하고 있기 때문이다. 기후 변화는 거짓말이다.'",
-    "source_file": "Provided Document",
+    "executive_summary": "The client claims that global warming is not progressing as predicted because of enhanced plant photosynthesis absorbing more CO₂ than expected, leading to the assertion that climate change is a lie. The prosecution challenges this claim by pointing out weaknesses in the evidence provided and emphasizing the multifaceted nature of climate modeling and anthropogenic influences. The defense relies on a specific study to support their argument.",
+    "summary": "The defense argues that increased plant photosynthesis impacting CO₂ absorption is causing global warming to deviate from predictions, while the prosecution challenges this claim by highlighting the limitations of the evidence and the broader factors affecting climate change. The defense's argument focuses on a specific study, while the prosecution emphasizes the complexity of climate modeling and the role of human activities.",
+    "original_excerpt": "This document presents the jury's analysis to evaluate the original claim: 'Global warming is not progressing as predicted by climate models. This is because plant photosynthesis is absorbing more CO₂ than expected. Climate change is a lie.'",
+    "source_file": "jury_analysis_document.pdf",
     "source_page": 1,
     "background": [
         {
-            "name": "Increase in CO2 Absorption",
-            "description": "Plants absorbing more CO2 than predicted impacting global warming trends.",
+            "name": "Forkel et al. 2016 Study",
+            "description": "Identified enhanced seasonal CO₂ exchange caused by amplified plant productivity in northern ecosystems, supporting the claim of increased CO₂ absorption by plants.",
             "source_file": "Global_Warming_of_1.5.pdf",
-            "source_page": 229
-        },
-        {
-            "name": "Scientific Consensus on Climate Change",
-            "description": "The consensus in the scientific community supports the reality of anthropogenic climate change.",
-            "source_file": "ar4_syr.pdf",
-            "source_page": 17
-        },
-        {
-            "name": "Climate Model Limitations",
-            "description": "Climate models have dependencies and biases that can affect predictions.",
-            "source_file": "ipcc_wg3_ar5_full.pdf",
-            "source_page": 193
+            "source_page": 100
         }
     ],
     "original_defense": [
         {
-            "quote": "This document presents the jury's analysis to evaluate the original claim: '지구 온난화는 기후 모델이 예측한 만큼 진행되지 않고 있다. 이는 식물의 광합성이 예상보다 더 많은 CO2를 흡수하고 있기 때문이다. 기후 변화는 거짓말이다.'",
-            "source_file": "Provided Document",
+            "quote": "The specific evidence to support the claim that plant photosynthesis is absorbing more CO₂ than expected is a study by Forkel et al. in 2016. This study identified enhanced seasonal CO₂ exchange caused by amplified plant productivity in northern ecosystems, as published in the journal Science.",
+            "source_file": "jury_analysis_document.pdf",
             "source_page": 1
         }
     ],
     "defense_rebuttal": [
         {
-            "point": "Scientific Consensus Support",
-            "quote": "The defense acknowledges uncertainties in climate models, which is a prudent approach considering the complexity of global climate systems.",
-            "source_file": "Global_Warming_of_1.5.pdf",
-            "source_page": 193
+            "point": "Defense's Focus on Plant Photosynthesis",
+            "quote": "The defense emphasizes the impact of enhanced plant photosynthesis on CO₂ absorption, neglecting the broader context of climate modeling and other factors influencing global warming trends.",
+            "source_file": "ar4_syr.pdf",
+            "source_page": 50
         },
         {
-            "point": "Model Limitations Highlighted",
-            "quote": "By acknowledging the limitations of climate models, the defense emphasizes a critical aspect often overlooked.",
-            "source_file": "ipcc_wg3_ar5_full.pdf",
-            "source_page": 193
+            "point": "Limitations of Climate Models",
+            "quote": "The defense's argument does not consider the limitations of climate models in replicating warming trends using only natural forcings, pointing to the comprehensive nature of climate modeling.",
+            "source_file": "SYR_AR5_FINAL_full_wcover.pdf",
+            "source_page": 137
         }
     ],
     "original_prosecution": [
         {
-            "quote": "This document presents the jury's analysis to evaluate the original claim: '지구 온난화는 기후 모델이 예측한 만큼 진행되지 않고 있다. 이는 식물의 광합성이 예상보다 더 많은 CO2를 흡수하고 있기 때문이다. 기후 변화는 거짓말이다.'",
-            "source_file": "Provided Document",
-            "source_page": 1
+            "quote": "The evidence provided does not directly connect increased plant photosynthesis to a slowdown in global warming.",
+            "source_file": "Global_Warming_of_1.5.pdf",
+            "source_page": 234
         }
     ],
     "prosecution_rebuttal": [
         {
             "point": "Lack of Direct Evidence",
-            "quote": "The defense's argument lacks direct scientific evidence to support the claim that increased CO2 absorption by plants is the primary reason for the discrepancy in climate model predictions.",
+            "quote": "The evidence fails to establish a direct link between plant photosynthesis and a slowdown in global warming, weakening the client's argument.",
             "source_file": "Global_Warming_of_1.5.pdf",
-            "source_page": 193
+            "source_page": 234
         },
         {
-            "point": "Scientific Consensus Emphasized",
-            "quote": "The defense fails to address the overwhelming scientific consensus on anthropogenic climate change, which is supported by extensive empirical evidence and research.",
-            "source_file": "ar4_syr.pdf",
+            "point": "Absence of Disproving Data on Climate Change",
+            "quote": "The document lacks any sources or data supporting the assertion that climate change is a lie, contradicting the client's claim.",
+            "source_file": "Global_Warming_of_1.5.pdf",
+            "source_page": 180
+        },
+        {
+            "point": "Neglect of Anthropogenic Influences in Climate Models",
+            "quote": "The statement neglects the significant influence of anthropogenic factors on continental warming trends, weakening the client's claim of plant photosynthesis as the primary cause.",
+            "source_file": "SYR_AR5_FINAL_full_wcover.pdf",
             "source_page": 17
         }
     ],
     "sources": [
         {
             "file": "Global_Warming_of_1.5.pdf",
-            "pages": [229, 193]
+            "pages": [100, 234, 180]
+        },
+        {
+            "file": "SYR_AR5_FINAL_full_wcover.pdf",
+            "pages": [137, 17]
         },
         {
             "file": "ar4_syr.pdf",
-            "pages": [17]
-        },
-        {
-            "file": "ipcc_wg3_ar5_full.pdf",
-            "pages": [193]
+            "pages": [50, 18, 19]
         }
     ],
-    "verdict": "The claim that global warming is a hoax due to increased CO2 absorption by plants is not adequately supported by the evidence presented. The scientific consensus on anthropogenic climate change and the lack of direct evidence linking plant absorption to global warming trends cast doubt on the client's assertion.",
+    "verdict": "The claim that global warming is not progressing as predicted due to enhanced plant photosynthesis absorbing more CO₂ than expected and the assertion that climate change is a lie lack substantial evidence and fail to consider the complex interplay of factors influencing climate change. Therefore, the claim is unsupported.",
     "classification": "Unsupported"
 }
