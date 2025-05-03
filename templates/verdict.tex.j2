@@ -6,7 +6,11 @@
 \usepackage{xcolor}
 \usepackage{tcolorbox}
 
-\title{ {{ original_excerpt }} }
+\title{
+  \normalsize
+  \parbox{\textwidth}{\centering\detokenize{ {{ original_excerpt }} }}
+}
+
 \date{\today}
 
 \begin{document}
@@ -33,15 +37,25 @@
 \section*{0. Executive Summary}
 \quad \detokenize{ {{ executive_summary }} }
 
-% 1. Claim
+% 1. Claim Summary
 \section*{1. Claim}
 \quad \detokenize{ {{ summary }} }
 
-% 2. Original Excerpt
-\section*{2. Original Excerpt}
-\begin{quote}
-\detokenize{ {{ original_excerpt }} }
-\end{quote}
+% 2. Original Excerpt (Verbatim)
+\section*{2. Original Excerpt (Verbatim)}
+\begin{tcolorbox}[
+  colframe=black,
+  colback=gray!10,
+  boxrule=0.5pt,
+  sharp corners,
+  width=\textwidth,
+  left=2mm,
+  right=2mm,
+  top=1mm,
+  bottom=1mm,
+]
+\small\detokenize{ {{ original_excerpt }} }
+\end{tcolorbox}
 \noindent\textbf{Source:} \detokenize{ {{ source_file }} }, p.~{{ source_page }}
 
 % 3. Background

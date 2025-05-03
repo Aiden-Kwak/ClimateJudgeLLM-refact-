@@ -25,5 +25,5 @@ class RagIndexService:
             force_update=force_update
         )
 
-    def query(self, resource: Any, question: str, evidence_num: int = 20):
+    def query(self, resource: Any, question: str, evidence_num: int = 30):
         return self.rs.generate_response(resource, question, evidence_num=evidence_num)
