@@ -53,8 +53,8 @@ class MainController:
         FileView.write_json("jury_results.json", jury_results)
 
         # 3-1) 정제
-        ConsoleView.print_info("배심원단 평가 정제 중...")
-        jury_clean_response = self.jury_clean._clean("jury_results.json", model_type="gpt-4o-mini")
+        ConsoleView.print_info("배심원단 평가 정제 중...") # gpt-3.5-turbo / gpt-4o-mini
+        jury_clean_response = self.jury_clean._clean("jury_results.json", model_type="gpt-3.5-turbo")
 
         # 1차 전처리: 코드블럭 제거, 여는 괄호부터 닫는 괄호까지 추출
         import re
