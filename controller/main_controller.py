@@ -197,8 +197,8 @@ class MainController:
             "sources":              sources,
             "verdict":              verdict_text,
             "classification":       classification,
-            "lawyer_result":        lawyer_results,
-            "prosecutor_result":    prosecutor_results
+            "lawyer_results":        lawyer_results,
+            "prosecutor_results":    prosecutor_results
         }
 
 
