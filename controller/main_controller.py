@@ -141,6 +141,12 @@ class MainController:
         # 8) 판결문 PDF 생성
         ConsoleView.print_info("판결문 PDF 생성 중...")
 
+        # 변호사,판사 의견 참고용 judge_input.json
+        with open("judge_input.json", "r", encoding="utf-8") as f:
+            judge_input = json.load(f)
+        lawyer_results = judge_input.get("lawyer_results", "")
+        prosecutor_results = judge_input.get("prosecutor_results", "")
+
         # verdict 텍스트를 JSON으로 파싱
         try:
             verdict_json = json.loads(verdict)
@@ -174,6 +180,8 @@ class MainController:
         sources              = verdict_json.get("sources", [])
         verdict_text         = verdict_json.get("verdict", verdict)
         classification       = verdict_json.get("classification", "")
+        #lawyer_results       = verdict_json.get("lawyer_results", "")
+        #prosecutor_results       = verdict_json.get("prosecutor_results", "")
 
         context = {
             "executive_summary":    verdict_json.get("executive_summary", ""),
@@ -188,7 +196,9 @@ class MainController:
             "prosecution_rebuttal": prosecution_rebuttal,
             "sources":              sources,
             "verdict":              verdict_text,
-            "classification":       classification
+            "classification":       classification,
+            "lawyer_result":        lawyer_results,
+            "prosecutor_result":    prosecutor_results
         }
 
 

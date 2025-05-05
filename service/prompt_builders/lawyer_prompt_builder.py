@@ -11,7 +11,11 @@ class LawyerPromptBuilder:
 
         For every quote or piece of evidence you use, append the precise source in this format:
 
-        > "인용문" (doc_name, p.X)
+        ```latex
+        \\begin{{quote}}
+        “인용문” (doc_name, p.X)
+        \\end{{quote}}
+        ```
 
         Where `p.X` 는 해당 인용문이 나온 페이지 번호입니다.
 
@@ -20,18 +24,40 @@ class LawyerPromptBuilder:
         - Weaknesses in the opposing arguments, providing specific references to the document where applicable.
         - Logical or factual inconsistencies in the evidence presented by the opposition, citing the document and page numbers for clarity.
 
-        2. Construct a response with the following structure:
+        2. Construct a **LaTeX–formatted** response with these sections:
         - **Summary of the claim**: A concise summary of the client’s position.
         - **Supporting evidence**: A detailed explanation of the evidence supporting the client’s claim, highlighting its strengths. Include direct quotes and page numbers from the provided document and the document's name.
         - **Counterarguments**: A rebuttal of any potential opposing arguments using logical reasoning. Reference specific parts of the document and page numbers to strengthen your rebuttal.
         - **Conclusion**: A persuasive closing statement summarizing why the client’s claim is valid and should be upheld.
+        \\section*{{Summary of the claim}}
+        \\quad …
+
+        \\section*{{Supporting evidence}}
+        \\begin{{itemize}}
+          \\item … 
+            \\begin{{quote}}
+            “인용문” (doc_name, p.X)
+            \\end{{quote}}
+          \\item …
+        \\end{{itemize}}
+
+        \\section*{{Counterarguments}}
+        \\begin{{itemize}}
+          \\item …
+            \\begin{{quote}}
+            “인용문” (doc_name, p.X)
+            \\end{{quote}}
+        \\end{{itemize}}
+
+        \\section*{{Conclusion}}
+        \\quad …
 
         3. Follow these guidelines:
         - Be logical, concise, and persuasive.
         - Avoid relying on external information; base your analysis solely on the evidence provided in the document.
         - Clearly explain how the evidence supports the client’s claim, and always cite the document name and page numbers to provide precise references like (document name / page).
 
-        Return your argument as a structured response ready to be presented in a legal context.
+        Finally, output **only** the LaTeX snippet (no extra markdown or code fences).
 
         =============== Provided Document (Start) ===============
         {json.dumps(document, ensure_ascii=False, indent=4)}

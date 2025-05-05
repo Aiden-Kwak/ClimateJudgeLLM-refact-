@@ -2,38 +2,61 @@ import json
 
 class ProsecutorPromptBuilder:
     @staticmethod
-    def build_analysis_prompt(document: dict, claim: str) -> str:    
+    def build_analysis_prompt(document: dict, claim: str) -> str:
         return f"""
-        You are a prosecutor tasked with critically evaluating the document provided by the jury. 
-        Your role is to identify weaknesses in the arguments presented and construct a compelling case against the client’s position.
+        You are a prosecutor tasked with critically evaluating the document provided by the jury.
+        Your role is to identify weaknesses in the client’s claim and construct a compelling case against it.
 
         The client’s claim is: "{claim}"
 
-        For every quote or piece of evidence you use, append the precise source in this format:
-        > "인용문" (doc_name, p.X)
-        Where `p.X` 는 해당 인용문이 나온 페이지 번호입니다.
+        For every quote you use, wrap it in a LaTeX quote environment:
+        ```latex
+        \\begin{{quote}}
+        “인용문” (doc_name, p.X)
+        \\end{{quote}}
+        ```
+        Where `p.X` is the page number.
 
-        1. Carefully review the document and identify:
-        - Specific evidence that weakens the client’s claim, including any gaps, inconsistencies, or contradictions in the client’s arguments. Provide direct references to the original document, including page numbers and relevant quotes.
-        - Strengths in the opposing arguments and evidence, highlighting how they counter the client’s position. Reference the document and page numbers where applicable.
-        - Logical or factual inconsistencies in the evidence provided by the client, citing specific excerpts and page numbers for clarity.
+        1. Review the document and identify:
+           - Evidence that weakens the client’s claim.  
+           - Strengths in the opposing (defense) arguments that counter the client.  
+           - Logical or factual inconsistencies in the client’s evidence.
 
-        2. Construct a response with the following structure:
-        - **Summary of the claim**: A concise summary of the client’s position.
-        - **Weaknesses in the evidence**: A detailed explanation of the weaknesses and gaps in the evidence supporting the client’s claim, citing specific sections, quotes, and page numbers from the document.
-        - **Counterarguments**: A rebuttal of the client’s supporting arguments using logical reasoning and highlighting stronger evidence from the opposing side. Include specific references to the document and page numbers to substantiate your argument.
-        - **Conclusion**: A persuasive closing statement summarizing why the client’s claim is invalid and should be rejected, incorporating the identified weaknesses and opposing strengths. Reference key evidence and page numbers to strengthen your conclusion.
+        2. Construct a **LaTeX–formatted** response with these sections:
+
+        \\section*{{Summary of the claim}}
+        \\quad …
+
+        \\section*{{Weaknesses in the evidence}}
+        \\begin{{itemize}}
+          \\item …  
+            \\begin{{quote}}
+            “인용문” (doc_name, p.X)
+            \\end{{quote}}
+          \\item …
+        \\end{{itemize}}
+
+        \\section*{{Counterarguments}}
+        \\begin{{itemize}}
+          \\item …  
+            \\begin{{quote}}
+            “인용문” (doc_name, p.X)
+            \\end{{quote}}
+        \\end{{itemize}}
+
+        \\section*{{Conclusion}}
+        \\quad …
 
         3. Follow these guidelines:
-        - Be logical, concise, and persuasive.
-        - Avoid relying on external information; base your analysis solely on the evidence provided in the document.
-        - Clearly explain how the evidence weakens the client’s claim, and always cite the document name and page numbers to provide precise references like (document name / page).
+           - Base everything only on the provided document.
+           - Use only LaTeX formatting (sections, itemize, quote).
+           - Cite page numbers precisely.
 
-        Return your argument as a structured response ready to be presented in a legal context.
+        Finally, output **only** the LaTeX snippet (no extra markdown or code fences).
 
         =============== Provided Document (Start) ===============
         {json.dumps(document, ensure_ascii=False, indent=4)}
-        =============== Provided Document (End) =================
+        =============== Provided Document (End) ================
         """
 
     @staticmethod
