@@ -1,6 +1,7 @@
 @startuml
 skinparam packageStyle rect
 
+' Controller 패키지
 package controller {
   class MainController {
     +__init__()
@@ -8,8 +9,10 @@ package controller {
   }
 }
 
+' Model 패키지
+interface LLMClient
+
 package model {
-  interface LLMClient
   class LLMModel {
     +call_deepseek(prompt, model)
     +call_openai(prompt, model)
@@ -18,36 +21,34 @@ package model {
   LLMModel ..|> LLMClient
 }
 
+' Service 패키지
 package service {
   class BaseAgentService {
     -llm : LLMClient
     +_invoke(prompt, model_type)
   }
   class RagIndexService {
-    +__init__(...)
-    +embed_resources(folder_name)
+    +embed_resources(folderName)
     +query(resource, question, evidence_num)
   }
   class QAService {
-    +__init__(llm)
     +generate_questions(claim)
   }
   class JuryService {
-    +__init__(rag)
     +evaluate(questions, resource, claim)
   }
+  class JuryCleanService {
+    +_clean(jury_results_path, model_type)
+  }
   class LawyerService {
-    +__init__(llm)
-    +analyze(...)
-    +reply_brief(...)
+    +analyze(jury_results_path, claim)
+    +reply_brief(reply_path, claim)
   }
   class ProsecutorService {
-    +__init__(llm)
-    +analyze(...)
-    +reply_brief(...)
+    +analyze(jury_results_path, claim)
+    +reply_brief(reply_path, claim)
   }
   class JudgeService {
-    +__init__(llm)
     +prepare_input(...)
     +decide(judge_input_path, model_type)
   }
@@ -56,9 +57,10 @@ package service {
   BaseAgentService <|-- ProsecutorService
   BaseAgentService <|-- JudgeService
 
-  RagIndexService ..> LLMModel : uses
+  RagIndexService ..> LLMModel
   QAService --> LLMModel
   JuryService --> RagIndexService
+  JuryCleanService --> JuryService
 
   package prompt_builders {
     class LawyerPromptBuilder {
@@ -72,12 +74,13 @@ package service {
     class JudgePromptBuilder {
       +build_decision_prompt(...)
     }
-    LawyerService --> LawyerPromptBuilder
-    ProsecutorService --> ProsecutorPromptBuilder
-    JudgeService --> JudgePromptBuilder
   }
+  LawyerService --> LawyerPromptBuilder
+  ProsecutorService --> ProsecutorPromptBuilder
+  JudgeService --> JudgePromptBuilder
 }
 
+' View 패키지
 package view {
   class ConsoleView {
     +print_info(msg)
@@ -89,13 +92,16 @@ package view {
   }
 }
 
-MainController --> LLMModel
-MainController --> RagIndexService
+' 의존 관계
+MainController --> ConsoleView
+MainController --> FileView
 MainController --> QAService
+MainController --> RagIndexService
 MainController --> JuryService
+MainController --> JuryCleanService
 MainController --> LawyerService
 MainController --> ProsecutorService
 MainController --> JudgeService
-MainController ..> ConsoleView
-MainController ..> FileView
+MainController --> VerdictPdfService
+
 @enduml
