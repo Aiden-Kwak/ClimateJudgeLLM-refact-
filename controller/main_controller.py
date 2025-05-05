@@ -144,9 +144,7 @@ class MainController:
         # 변호사,판사 의견 참고용 judge_input.json
         with open("judge_input.json", "r", encoding="utf-8") as f:
             judge_input = json.load(f)
-        lawyer_results = judge_input.get("lawyer_results", "")
-        prosecutor_results = judge_input.get("prosecutor_results", "")
-
+        
         # verdict 텍스트를 JSON으로 파싱
         try:
             verdict_json = json.loads(verdict)
@@ -154,18 +152,22 @@ class MainController:
             ConsoleView.print_info("[WARN] Judge response is not JSON. 기본값 사용.")
             verdict_json = {}
 
-            # 나중에 분리할 것.
+        # 나중에 분리할 것.
+        _esc = re.compile(r'(?<!\\)_')   # 앞에 백슬래시가 없는 언더스코어만 매치
         def escape_underscores_in_values(obj):
             if isinstance(obj, dict):
                 return {k: escape_underscores_in_values(v) for k, v in obj.items()}
             elif isinstance(obj, list):
                 return [escape_underscores_in_values(v) for v in obj]
             elif isinstance(obj, str):
-                return obj.replace("_", r"\_")
+                # r'\\_' 로 이미 이스케이프된 부분은 건드리지 않고,
+                # plain '_' 만 '\_' 로.
+                return _esc.sub(r'\\_', obj)
             else:
                 return obj
             
         verdict_json = escape_underscores_in_values(verdict_json)
+        judge_input = escape_underscores_in_values(judge_input)
 
         # JSON 스키마에 맞춰 꺼내기
         summary              = verdict_json.get("summary", "")
@@ -180,8 +182,10 @@ class MainController:
         sources              = verdict_json.get("sources", [])
         verdict_text         = verdict_json.get("verdict", verdict)
         classification       = verdict_json.get("classification", "")
-        #lawyer_results       = verdict_json.get("lawyer_results", "")
-        #prosecutor_results       = verdict_json.get("prosecutor_results", "")
+        
+        lawyer_results       = judge_input.get("lawyer_results", "")
+        prosecutor_results   = judge_input.get("prosecutor_results", "")
+
 
         context = {
             "executive_summary":    verdict_json.get("executive_summary", ""),

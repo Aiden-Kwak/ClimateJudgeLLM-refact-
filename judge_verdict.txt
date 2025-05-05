@@ -1,63 +1,89 @@
 {
-    "executive_summary": "The claim that global warming is not progressing as predicted due to plant photosynthesis absorbing more CO2 than expected, leading to the assertion that climate change is a lie, is inaccurate. While plant photosynthesis can impact carbon sequestration and climate predictions, it does not negate the broader understanding of climate change driven by human activities.",
-    "summary": "The client claims that global warming is not progressing as predicted due to increased CO2 absorption by plants, suggesting that climate change is a fallacy. The defense supports this claim with studies on enhanced photosynthesis rates, while the prosecution counters by emphasizing the broader understanding of climate change and the limitations of relying on plant photosynthesis alone.",
-    "original_excerpt": "Global warming is not progressing as predicted by climate models. This is because plant photosynthesis is absorbing more CO₂ than expected. Climate change is a lie.",
-    "source_file": "lawyer_results",
-    "source_page": 1,
-    "background": [],
-    "original_defense": [
+    "executive_summary": "The claim that despite climate change, the global polar-bear population has increased substantially, the Great Barrier Reef has more coral cover than at any point since 1986, and extreme-heat deaths have declined is inaccurate. The evidence provided does not support these claims and instead highlights the negative impacts of climate change on polar bears, coral reefs, and extreme-heat deaths.",
+    "summary": "The client's claim that the global polar-bear population has increased substantially, the Great Barrier Reef has more coral cover than at any point since 1986, and extreme-heat deaths have declined is evaluated based on the impact of climate change on these aspects. The evidence shows that climate change negatively affects polar bears, coral reefs, and extreme-heat deaths, refuting the client's claims.",
+    "original_excerpt": "Despite climate change, the global polar-bear population has increased substantially, the Great Barrier Reef has more coral cover than at any point since 1986, and extreme-heat deaths have declined.",
+    "source_file": "prosecutor_results",
+    "source_page": 2,
+    "background": [
         {
-            "quote": "The study by Xiao, J.J., H. Li, J. Jian, and X. Haifeng in 2011 indicates that \"Stratospheric sulfate geoengineering could enhance the terrestrial photosynthesis rate\" (Global_Warming_of_1.5.pdf, p. 458).",
+            "name": "Climate Change Impact on Polar Bears",
+            "description": "Climate change leads to habitat loss for polar bears due to decreasing sea ice, impacting their survival by affecting hunting abilities and breeding habitats.",
             "source_file": "Global_Warming_of_1.5.pdf",
-            "source_page": 458
+            "source_page": 273
         },
         {
-            "quote": "Increased plant photosynthesis can lead to enhanced carbon uptake by vegetation, acting as a carbon sink to mitigate CO2 levels. Studies show substantial carbon uptake by vegetation under future scenarios, counteracting climate change effects. (Global_Warming_of_1.5.pdf, p. 234)",
+            "name": "Climate Change Impact on Coral Reefs",
+            "description": "Climate change causes significant coral cover losses on reefs like the Great Barrier Reef, highlighting the risks posed to coral reef ecosystems.",
             "source_file": "Global_Warming_of_1.5.pdf",
-            "source_page": 234
+            "source_page": 266
+        },
+        {
+            "name": "Extreme-Heat Deaths",
+            "description": "There is no direct evidence supporting a claim of a decline in extreme-heat deaths, with available information emphasizing increased risks and impacts of extreme heat events on human health.",
+            "source_file": "SYR_AR5_FINAL_full_wcover.pdf",
+            "source_page": 70
+        }
+    ],
+    "original_defense": [
+        {
+            "quote": "Loses in sea ice will result in habitat losses for organisms like seals, polar bears, whales, and sea birds. There's robust evidence that climate change will change photosynthetic species due to sea ice retreat, benefiting fisheries productivity.",
+            "source_file": "Global_Warming_of_1.5.pdf",
+            "source_page": 273
+        },
+        {
+            "quote": "Mass coral bleaching and mortality events on the Great Barrier Reef underscore climate-change related risks to coral reefs. The losses highlight the scale of threats posed by climate change to coral reef ecosystems.",
+            "source_file": "Global_Warming_of_1.5.pdf",
+            "source_page": 266
+        },
+        {
+            "quote": "No data directly supporting a decline in extreme-heat deaths is presented.",
+            "source_file": "SYR_AR5_FINAL_full_wcover.pdf",
+            "source_page": 70
         }
     ],
     "defense_rebuttal": [
         {
-            "point": "The defense acknowledges the complex nature of climate models but presents a valid argument based on studies indicating the potential enhancement of terrestrial photosynthesis rates through geoengineering.",
-            "quote": "While geoengineering may have risks, the defense's point remains relevant in exploring diverse mechanisms to address climate change. (Global_Warming_of_1.5.pdf, p. 458)",
-            "source_file": "Global_Warming_of_1.5.pdf",
-            "source_page": 458
-        },
-        {
-            "point": "Contrary to the prosecutor’s assertion that fluctuations in plant photosynthesis lack long-term impact, evidence suggests substantial carbon uptake by vegetation under future scenarios, showcasing the potential for sustained carbon sequestration.",
-            "quote": "These findings challenge the prosecutor's dismissal of plant photosynthesis as a significant factor in mitigating CO2 levels. (Global_Warming_of_1.5.pdf, p. 234)",
-            "source_file": "Global_Warming_of_1.5.pdf",
-            "source_page": 234
+            "point": "The defense's selective interpretation of evidence aligns with the client's claims and adequately addresses the positive developments in polar bear populations, coral cover, and extreme-heat deaths.",
+            "quote": "The evidence presented in the document focuses on the threats posed by climate change to polar bears, coral reefs, and human health due to extreme heat events.",
+            "source_file": "lawyer_results",
+            "source_page": 2
         }
     ],
     "original_prosecution": [
         {
-            "quote": "The evidence provided in the document does not sufficiently support the client's claim that global warming is not progressing as predicted because plant photosynthesis is absorbing more CO₂ than expected. The studies referenced focus on how plant photosynthesis is affected by external factors and integrated into climate models rather than disproving the existence or progression of global warming. Thus, the argument that climate change is a lie is not substantiated by the evidence presented.",
-            "source_file": "prosecutor_results",
-            "source_page": 1
+            "quote": "Losses in sea ice will result in habitat losses for organisms like seals, polar bears, whales, and sea birds. There's robust evidence that climate change will change photosynthetic species due to sea ice retreat, benefiting fisheries productivity.",
+            "source_file": "Global_Warming_of_1.5.pdf",
+            "source_page": 273
+        },
+        {
+            "quote": "Mass coral bleaching and mortality events on the Great Barrier Reef underscore climate-change related risks to coral reefs. The losses highlight the scale of threats posed by climate change to coral reef ecosystems.",
+            "source_file": "Global_Warming_of_1.5.pdf",
+            "source_page": 266
+        },
+        {
+            "quote": "No data directly supporting a decline in extreme-heat deaths is presented.",
+            "source_file": "SYR_AR5_FINAL_full_wcover.pdf",
+            "source_page": 70
         }
     ],
     "prosecution_rebuttal": [
         {
-            "point": "The defense's reliance on the study by Xiao et al. (2011) suggesting that stratospheric sulfate geoengineering could enhance photosynthesis rates ignores the fact that geoengineering solutions are highly controversial and come with significant environmental and ethical risks.",
-            "quote": "\"Relying on such unproven and risky methods to counterbalance human-induced climate change is not a feasible or safe solution.\" (Global_Warming_of_1.5.pdf, p. 458)",
-            "source_file": "Global_Warming_of_1.5.pdf",
-            "source_page": 458
-        },
-        {
-            "point": "While the defense highlights studies on carbon uptake by vegetation, they fail to address the limitations and uncertainties surrounding these projections.",
-            "quote": "\"The variability in plant carbon uptake under future scenarios does not guarantee a consistent or sufficient mitigation of CO2 levels to counteract the effects of human-induced emissions.\" (Global_Warming_of_1.5.pdf, p. 234)",
-            "source_file": "Global_Warming_of_1.5.pdf",
-            "source_page": 234
+            "point": "The evidence shows the detrimental impacts of climate change on polar bears, coral reefs, and extreme-heat deaths, contradicting the client's claims.",
+            "quote": "The evidence provided in the document contradicts the client's claim that the global polar-bear population has substantially increased, the Great Barrier Reef has more coral cover than in 1986, and that extreme-heat deaths have declined.",
+            "source_file": "prosecutor_results",
+            "source_page": 2
         }
     ],
     "sources": [
         {
             "file": "Global_Warming_of_1.5.pdf",
-            "pages": [179, 234, 236, 458]
+            "pages": [266, 273]
+        },
+        {
+            "file": "SYR_AR5_FINAL_full_wcover.pdf",
+            "pages": [70]
         }
     ],
-    "verdict": "The claim is inaccurate due to a lack of direct evidence supporting the assertion that plant photosynthesis alone is causing deviations in global warming predictions.",
+    "verdict": "The claim that despite climate change, the global polar-bear population has increased substantially, the Great Barrier Reef has more coral cover than at any point since 1986, and extreme-heat deaths have declined is inaccurate.",
     "classification": "Inaccurate"
 }
