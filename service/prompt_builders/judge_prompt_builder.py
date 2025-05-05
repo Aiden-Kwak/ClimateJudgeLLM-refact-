@@ -31,7 +31,11 @@ class JudgePromptBuilder:
         - Fill in quotes and rebuttals **with text exactly matching the evidence field** in the input, and **cite file name and page number**.
         - Only use content from the evidence list. Do not quote or refer to any text that is not directly available in the evidence.
 
-        Finally, return your response strictly in this JSON format:
+        Finally, return your response strictly in this JSON format
+        - Caution!: Do NOT use Unicode subscripts or superscripts (e.g., ₂, ⁰) anywhere.  
+        Instead use CO$_2$, H$_2$O, O$_3$.
+        - Please replace any underscores "_" with a single space " " in your prompt  
+        (e.g. use "Global Warming of 1.5.pdf" instead of "Global_Warming_of_1.5.pdf").
 
         {{
         "executive_summary":    "string",

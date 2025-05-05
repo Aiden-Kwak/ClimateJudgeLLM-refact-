@@ -148,6 +148,19 @@ class MainController:
             ConsoleView.print_info("[WARN] Judge response is not JSON. 기본값 사용.")
             verdict_json = {}
 
+            # 나중에 분리할 것.
+        def escape_underscores_in_values(obj):
+            if isinstance(obj, dict):
+                return {k: escape_underscores_in_values(v) for k, v in obj.items()}
+            elif isinstance(obj, list):
+                return [escape_underscores_in_values(v) for v in obj]
+            elif isinstance(obj, str):
+                return obj.replace("_", r"\_")
+            else:
+                return obj
+            
+        verdict_json = escape_underscores_in_values(verdict_json)
+
         # JSON 스키마에 맞춰 꺼내기
         summary              = verdict_json.get("summary", "")
         original_excerpt     = verdict_json.get("original_excerpt", summary)

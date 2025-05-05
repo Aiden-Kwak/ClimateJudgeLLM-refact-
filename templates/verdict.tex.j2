@@ -6,10 +6,7 @@
 \usepackage{xcolor}
 \usepackage{tcolorbox}
 
-\title{
-  \normalsize
-  \parbox{\textwidth}{\centering\detokenize{ {{ original_excerpt }} }}
-}
+\title{Climate Change Claim Review and Verdict Report}
 
 \date{\today}
 
@@ -33,16 +30,8 @@
   \end{tcolorbox}
 \end{center}
 
-% 0. Executive Summary
-\section*{0. Executive Summary}
-\quad \detokenize{ {{ executive_summary }} }
-
-% 1. Claim Summary
-\section*{1. Claim}
-\quad \detokenize{ {{ summary }} }
-
-% 2. Original Excerpt (Verbatim)
-\section*{2. Original Excerpt (Verbatim)}
+% 0. Original Excerpt (Verbatim)
+\section*{0. Original Excerpt (Verbatim)}
 \begin{tcolorbox}[
   colframe=black,
   colback=gray!10,
@@ -54,17 +43,24 @@
   top=1mm,
   bottom=1mm,
 ]
-\small\detokenize{ {{ original_excerpt }} }
+\small {{ original_excerpt }}
 \end{tcolorbox}
-\noindent\textbf{Source:} \detokenize{ {{ source_file }} }, p.~{{ source_page }}
+
+% 1. Executive Summary
+\section*{1. Executive Summary}
+\quad {{ executive_summary }}
+
+% 2. Claim Summary
+\section*{2. Claim}
+\quad {{ summary }}
 
 % 3. Background
 \section*{3. Background}
 {% if background %}
 \begin{itemize}
   {% for b in background %}
-  \item \textbf{ {{ b.name }} } --- \detokenize{ {{ b.description }} } \\
-        (\detokenize{ {{ b.source_file }} }, p.~{{ b.source_page }})
+  \item \textbf{ {{ b.name }} } --- {{ b.description }} \\
+        ({{ b.source_file }}, p.~{{ b.source_page }})
   {% endfor %}
 \end{itemize}
 {% else %}
@@ -77,8 +73,8 @@
 {% if original_defense %}
 \begin{itemize}
   {% for od in original_defense %}
-  \item \detokenize{ {{ od.quote }} }  
-        (\detokenize{ {{ od.source_file }} }, p.~{{ od.source_page }})
+  \item {{ od.quote }}  
+        ({{ od.source_file }}, p.~{{ od.source_page }})
   {% endfor %}
 \end{itemize}
 {% else %}
@@ -90,8 +86,8 @@
 \begin{itemize}
   {% for dr in defense_rebuttal %}
   \item \textbf{ {{ dr.point }} }:  
-        \detokenize{ {{ dr.quote }} }  
-        (\detokenize{ {{ dr.source_file }} }, p.~{{ dr.source_page }})
+        {{ dr.quote }}  
+        ({{ dr.source_file }}, p.~{{ dr.source_page }})
   {% endfor %}
 \end{itemize}
 {% else %}
@@ -104,8 +100,8 @@
 {% if original_prosecution %}
 \begin{itemize}
   {% for op in original_prosecution %}
-  \item \detokenize{ {{ op.quote }} }  
-        (\detokenize{ {{ op.source_file }} }, p.~{{ op.source_page }})
+  \item {{ op.quote }}  
+        ({{ op.source_file }}, p.~{{ op.source_page }})
   {% endfor %}
 \end{itemize}
 {% else %}
@@ -117,8 +113,8 @@
 \begin{itemize}
   {% for pr in prosecution_rebuttal %}
   \item \textbf{ {{ pr.point }} }:  
-        \detokenize{ {{ pr.quote }} }  
-        (\detokenize{ {{ pr.source_file }} }, p.~{{ pr.source_page }})
+        {{ pr.quote }}  
+        ({{ pr.source_file }}, p.~{{ pr.source_page }})
   {% endfor %}
 \end{itemize}
 {% else %}
@@ -130,7 +126,7 @@
 {% if sources %}
 \begin{itemize}
   {% for src in sources %}
-  \item \detokenize{ {{ src.file }} } --- pages: {{ src.pages | join(", ") }}
+  \item {{ src.file }} --- pages: {{ src.pages | join(", ") }}
   {% endfor %}
 \end{itemize}
 {% else %}
@@ -139,6 +135,6 @@
 
 % 7. Conclusion
 \section*{7. Conclusion}
-\quad \detokenize{ {{ verdict }} }
+\quad {{ verdict }}
 
 \end{document}
