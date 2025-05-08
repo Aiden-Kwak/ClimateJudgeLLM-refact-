@@ -1,5 +1,5 @@
 from easy_rag import RagService
-from typing import Any
+from typing import Any, Tuple
 
 class RagIndexService:
     def __init__(
@@ -19,11 +19,16 @@ class RagIndexService:
         )
 
     def embed_resources(self, folder_name: str, force_update: bool = False):
-
         return self.rs.rsc(
             folder_name,
             force_update=force_update
         )
 
-    def query(self, resource: Any, question: str, evidence_num: int = 30):
-        return self.rs.generate_response(resource, question, evidence_num=evidence_num)
+    def query(self, resource: Any, question: str, evidence_num: int = 30, context_expansion: bool = True, expansion_window: int = 1) -> Tuple[str, list]:
+        return self.rs.generate_response(
+            resource, 
+            question, 
+            evidence_num=evidence_num,
+            context_expansion=context_expansion,
+            expansion_window=expansion_window
+        )

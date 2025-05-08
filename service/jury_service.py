@@ -19,7 +19,7 @@ class JuryService:
     def evaluate(self, questions: list[str], resource: Any, original_claim: str) -> dict:
         results: list[QuestionResult] = []
         with ThreadPoolExecutor(max_workers=10) as executor:
-            futures = {executor.submit(self.rag.query, resource, q, 5): q for q in questions}
+            futures = {executor.submit(self.rag.query, resource, q, 15, True, 2): q for q in questions}
             for future in as_completed(futures):
                 q = futures[future]
                 response, evidence = future.result()

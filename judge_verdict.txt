@@ -1,89 +1,41 @@
 {
-    "executive_summary": "The claim that despite climate change, the global polar-bear population has increased substantially, the Great Barrier Reef has more coral cover than at any point since 1986, and extreme-heat deaths have declined is inaccurate. The evidence provided does not support these claims and instead highlights the negative impacts of climate change on polar bears, coral reefs, and extreme-heat deaths.",
-    "summary": "The client's claim that the global polar-bear population has increased substantially, the Great Barrier Reef has more coral cover than at any point since 1986, and extreme-heat deaths have declined is evaluated based on the impact of climate change on these aspects. The evidence shows that climate change negatively affects polar bears, coral reefs, and extreme-heat deaths, refuting the client's claims.",
-    "original_excerpt": "Despite climate change, the global polar-bear population has increased substantially, the Great Barrier Reef has more coral cover than at any point since 1986, and extreme-heat deaths have declined.",
+    "executive_summary": "The claim that global warming is not progressing as predicted due to increased CO₂ absorption by plant photosynthesis is inaccurate. The evidence does not support this claim, as climate models consider the impact of plant photosynthesis on CO₂ absorption and climate change predictions.",
+    "summary": "The defense argues that current climate models underestimate the absorption of CO₂ by plant photosynthesis, leading to a claim that global warming is not progressing as predicted. The prosecution counters by highlighting that the evidence does not support the claim and that climate models do consider the impact of plant photosynthesis on CO₂ absorption. The defense lacks concrete evidence and fails to address key complexities in the carbon cycle and climate models.",
+    "original_excerpt": "Global warming is not progressing as predicted by climate models. This is because plant photosynthesis is absorbing more CO₂ than expected. Climate change is a lie.",
     "source_file": "prosecutor_results",
-    "source_page": 2,
-    "background": [
-        {
-            "name": "Climate Change Impact on Polar Bears",
-            "description": "Climate change leads to habitat loss for polar bears due to decreasing sea ice, impacting their survival by affecting hunting abilities and breeding habitats.",
-            "source_file": "Global_Warming_of_1.5.pdf",
-            "source_page": 273
-        },
-        {
-            "name": "Climate Change Impact on Coral Reefs",
-            "description": "Climate change causes significant coral cover losses on reefs like the Great Barrier Reef, highlighting the risks posed to coral reef ecosystems.",
-            "source_file": "Global_Warming_of_1.5.pdf",
-            "source_page": 266
-        },
-        {
-            "name": "Extreme-Heat Deaths",
-            "description": "There is no direct evidence supporting a claim of a decline in extreme-heat deaths, with available information emphasizing increased risks and impacts of extreme heat events on human health.",
-            "source_file": "SYR_AR5_FINAL_full_wcover.pdf",
-            "source_page": 70
-        }
-    ],
-    "original_defense": [
-        {
-            "quote": "Loses in sea ice will result in habitat losses for organisms like seals, polar bears, whales, and sea birds. There's robust evidence that climate change will change photosynthetic species due to sea ice retreat, benefiting fisheries productivity.",
-            "source_file": "Global_Warming_of_1.5.pdf",
-            "source_page": 273
-        },
-        {
-            "quote": "Mass coral bleaching and mortality events on the Great Barrier Reef underscore climate-change related risks to coral reefs. The losses highlight the scale of threats posed by climate change to coral reef ecosystems.",
-            "source_file": "Global_Warming_of_1.5.pdf",
-            "source_page": 266
-        },
-        {
-            "quote": "No data directly supporting a decline in extreme-heat deaths is presented.",
-            "source_file": "SYR_AR5_FINAL_full_wcover.pdf",
-            "source_page": 70
-        }
-    ],
-    "defense_rebuttal": [
-        {
-            "point": "The defense's selective interpretation of evidence aligns with the client's claims and adequately addresses the positive developments in polar bear populations, coral cover, and extreme-heat deaths.",
-            "quote": "The evidence presented in the document focuses on the threats posed by climate change to polar bears, coral reefs, and human health due to extreme heat events.",
-            "source_file": "lawyer_results",
-            "source_page": 2
-        }
-    ],
+    "source_page": 1,
+    "background": [],
+    "original_defense": [],
+    "defense_rebuttal": [],
     "original_prosecution": [
         {
-            "quote": "Losses in sea ice will result in habitat losses for organisms like seals, polar bears, whales, and sea birds. There's robust evidence that climate change will change photosynthetic species due to sea ice retreat, benefiting fisheries productivity.",
-            "source_file": "Global_Warming_of_1.5.pdf",
-            "source_page": 273
-        },
-        {
-            "quote": "Mass coral bleaching and mortality events on the Great Barrier Reef underscore climate-change related risks to coral reefs. The losses highlight the scale of threats posed by climate change to coral reef ecosystems.",
-            "source_file": "Global_Warming_of_1.5.pdf",
-            "source_page": 266
-        },
-        {
-            "quote": "No data directly supporting a decline in extreme-heat deaths is presented.",
-            "source_file": "SYR_AR5_FINAL_full_wcover.pdf",
-            "source_page": 70
+            "quote": "The evidence presented in the document does not support the client's claim that increased plant photosynthesis absorption of CO₂ is the reason global warming is not progressing as predicted.",
+            "source_file": "prosecutor_results",
+            "source_page": 1
         }
     ],
     "prosecution_rebuttal": [
         {
-            "point": "The evidence shows the detrimental impacts of climate change on polar bears, coral reefs, and extreme-heat deaths, contradicting the client's claims.",
-            "quote": "The evidence provided in the document contradicts the client's claim that the global polar-bear population has substantially increased, the Great Barrier Reef has more coral cover than in 1986, and that extreme-heat deaths have declined.",
+            "point": "The defense's argument lacks sufficient evidence to substantiate the claim that current climate models inaccurately represent the increased absorption of CO₂ by plant photosynthesis.",
+            "quote": "The evidence provided does not support the claim that plant photosynthesis is absorbing more CO₂ than expected",
             "source_file": "prosecutor_results",
-            "source_page": 2
+            "source_page": 1
+        },
+        {
+            "point": "The defense only focuses on the limitations of current models and the complexities of carbon cycles without addressing or refuting the possibility that plant photosynthesis is indeed absorbing more CO₂ than initially expected.",
+            "quote": "Plant photosynthesis rate and CO₂ absorption impact are assessed via models and observations, predicting increased or stable global carbon uptake by plants.",
+            "source_file": "prosecutor_results",
+            "source_page": 1
         }
     ],
     "sources": [
         {
-            "file": "Global_Warming_of_1.5.pdf",
-            "pages": [266, 273]
-        },
-        {
-            "file": "SYR_AR5_FINAL_full_wcover.pdf",
-            "pages": [70]
+            "file": "prosecutor_results",
+            "pages": [
+                1
+            ]
         }
     ],
-    "verdict": "The claim that despite climate change, the global polar-bear population has increased substantially, the Great Barrier Reef has more coral cover than at any point since 1986, and extreme-heat deaths have declined is inaccurate.",
+    "verdict": "The claim that global warming is not progressing as predicted due to increased CO₂ absorption by plant photosynthesis is inaccurate.",
     "classification": "Inaccurate"
 }

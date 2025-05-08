@@ -2,6 +2,7 @@
 
 import os
 import json
+import re
 from dotenv import load_dotenv
 
 from model.llm_model import LLMModel
@@ -54,25 +55,12 @@ class MainController:
 
         # 3-1) 정제
         ConsoleView.print_info("배심원단 평가 정제 중...") # gpt-3.5-turbo / gpt-4o-mini
-        jury_clean_response = self.jury_clean._clean("jury_results.json", model_type="gpt-3.5-turbo")
-
-        # 1차 전처리: 코드블럭 제거, 여는 괄호부터 닫는 괄호까지 추출
-        import re
-
-        match = re.search(r"\{.*\}", jury_clean_response, re.DOTALL)
-        if not match:
-            ConsoleView.print_info("[ERROR] 정제된 결과에 JSON 구조가 없습니다. 원본을 유지합니다.")
-            print(jury_clean_response)
-        else:
-            json_str = match.group(0)
-            try:
-                jury_clean_results = json.loads(json_str)
-                FileView.write_json("jury_results.json", jury_clean_results)
-            except json.JSONDecodeError as e:
-                ConsoleView.print_info("[ERROR] 정제된 결과가 올바른 JSON 형식이 아닙니다. 원본을 유지합니다.")
-                print("JSONDecodeError:", e)
-                print(json_str)
-
+        try:
+            jury_clean_results = self.jury_clean._clean("jury_results.json", model_type="gpt-3.5-turbo")
+            FileView.write_json("jury_results.json", jury_clean_results)
+        except Exception as e:
+            ConsoleView.print_info("[ERROR] 배심원단 평가 정제 실패. 원본을 유지합니다.")
+            print("Error:", e)
 
         # 4) 변호사 의견
         ConsoleView.print_info("변호사 의견 생성 중...")
