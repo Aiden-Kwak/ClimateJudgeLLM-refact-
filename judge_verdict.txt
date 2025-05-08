@@ -1,41 +1,9 @@
 {
-    "executive_summary": "The claim that global warming is not progressing as predicted due to increased CO₂ absorption by plant photosynthesis is inaccurate. The evidence does not support this claim, as climate models consider the impact of plant photosynthesis on CO₂ absorption and climate change predictions.",
-    "summary": "The defense argues that current climate models underestimate the absorption of CO₂ by plant photosynthesis, leading to a claim that global warming is not progressing as predicted. The prosecution counters by highlighting that the evidence does not support the claim and that climate models do consider the impact of plant photosynthesis on CO₂ absorption. The defense lacks concrete evidence and fails to address key complexities in the carbon cycle and climate models.",
-    "original_excerpt": "Global warming is not progressing as predicted by climate models. This is because plant photosynthesis is absorbing more CO₂ than expected. Climate change is a lie.",
-    "source_file": "prosecutor_results",
-    "source_page": 1,
-    "background": [],
-    "original_defense": [],
-    "defense_rebuttal": [],
-    "original_prosecution": [
-        {
-            "quote": "The evidence presented in the document does not support the client's claim that increased plant photosynthesis absorption of CO₂ is the reason global warming is not progressing as predicted.",
-            "source_file": "prosecutor_results",
-            "source_page": 1
-        }
-    ],
-    "prosecution_rebuttal": [
-        {
-            "point": "The defense's argument lacks sufficient evidence to substantiate the claim that current climate models inaccurately represent the increased absorption of CO₂ by plant photosynthesis.",
-            "quote": "The evidence provided does not support the claim that plant photosynthesis is absorbing more CO₂ than expected",
-            "source_file": "prosecutor_results",
-            "source_page": 1
-        },
-        {
-            "point": "The defense only focuses on the limitations of current models and the complexities of carbon cycles without addressing or refuting the possibility that plant photosynthesis is indeed absorbing more CO₂ than initially expected.",
-            "quote": "Plant photosynthesis rate and CO₂ absorption impact are assessed via models and observations, predicting increased or stable global carbon uptake by plants.",
-            "source_file": "prosecutor_results",
-            "source_page": 1
-        }
-    ],
-    "sources": [
-        {
-            "file": "prosecutor_results",
-            "pages": [
-                1
-            ]
-        }
-    ],
-    "verdict": "The claim that global warming is not progressing as predicted due to increased CO₂ absorption by plant photosynthesis is inaccurate.",
-    "classification": "Inaccurate"
+  "executive_summary": "The claim that climate change is a lie due to increased plant photosynthesis absorbing more CO$_2$ than anticipated is inaccurate based on the evidence.",
+  "summary": "The defense argues that plant photosynthesis absorbs more CO$_2$ than predicted, challenging traditional climate change narratives. However, the prosecution raises concerns about oversimplification and the broader context of climate modeling.",
+  "original_excerpt": "Models show increased Gross Primary Productivity (GPP) in temperate latitudes by approximately 2 GtC yr-1. Plant photosynthesis is absorbing more CO$_2$ than initially predicted by climate models.",
+  "source_file": "Global_Warming_of_1.5.pdf",
+  "source_page": 234,
+  "verdict": "The defense provides a narrow perspective focusing on plant photosynthesis without considering the complex interplay of various factors in climate modeling highlighted by the prosecution. While plant photosynthesis contributes to CO$_2$ absorption, it is not the sole explanatory factor for climate change discrepancies. The evidence supports the prosecution's argument that the claim oversimplifies the complexities of climate modeling.",
+  "classification": "Inaccurate"
 }

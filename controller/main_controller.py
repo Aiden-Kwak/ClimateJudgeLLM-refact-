@@ -17,6 +17,50 @@ from view.file_view import FileView
 from service.pdf_service import VerdictPdfService
 from service.jury_clean_service import JuryCleanService
 
+def convert_to_latex(text: str) -> str:
+    if not text:
+        return text
+    
+    # 이미 LaTeX 수식이 포함된 경우 건너뛰기
+    if '$_' in text or '$^' in text:
+        return text
+    
+    # 일반적인 유니코드 하첨자/상첨자를 LaTeX 형식으로 변환
+    replacements = {
+        'CO₂': 'CO$_2$',
+        'H₂O': 'H$_2$O',
+        'O₃': 'O$_3$',
+        'CH₄': 'CH$_4$',
+        'N₂O': 'N$_2$O',
+        '₀': '$_0$',
+        '₁': '$_1$',
+        '₂': '$_2$',
+        '₃': '$_3$',
+        '₄': '$_4$',
+        '₅': '$_5$',
+        '₆': '$_6$',
+        '₇': '$_7$',
+        '₈': '$_8$',
+        '₉': '$_9$',
+        '⁰': '$^0$',
+        '¹': '$^1$',
+        '²': '$^2$',
+        '³': '$^3$',
+        '⁴': '$^4$',
+        '⁵': '$^5$',
+        '⁶': '$^6$',
+        '⁷': '$^7$',
+        '⁸': '$^8$',
+        '⁹': '$^9$'
+    }
+    
+    # 가장 긴 패턴부터 먼저 치환 (예: CO₂가 C, O, ₂ 각각으로 치환되는 것 방지)
+    patterns = sorted(replacements.keys(), key=len, reverse=True)
+    for pattern in patterns:
+        text = text.replace(pattern, replacements[pattern])
+    
+    return text
+
 class MainController:
     def __init__(self):
         load_dotenv()
@@ -69,6 +113,8 @@ class MainController:
             claim, 
             model_type="gpt-3.5-turbo"
         )
+        # LaTeX 형식으로 변환
+        lawyer_text = convert_to_latex(lawyer_text)
         FileView.write_text(
             os.path.join("results", "lawyer_results.txt"), 
             lawyer_text
@@ -81,6 +127,8 @@ class MainController:
             claim,
             model_type="gpt-3.5-turbo"
         )
+        # LaTeX 형식으로 변환
+        prosecutor_text = convert_to_latex(prosecutor_text)
         FileView.write_text(
             os.path.join("results", "prosecutor_results.txt"), 
             prosecutor_text
@@ -93,6 +141,8 @@ class MainController:
             claim=claim,
             model_type="gpt-3.5-turbo"
         )
+        # LaTeX 형식으로 변환
+        prosecutor_reply = convert_to_latex(prosecutor_reply)
         FileView.write_text(
             os.path.join("reply_brief", "prosecutor_reply_brief.txt"),
             prosecutor_reply
@@ -104,6 +154,8 @@ class MainController:
             claim=claim,
             model_type="gpt-3.5-turbo"
         )
+        # LaTeX 형식으로 변환
+        lawyer_reply = convert_to_latex(lawyer_reply)
         FileView.write_text(
             os.path.join("reply_brief", "lawyer_reply_brief.txt"),
             lawyer_reply
@@ -111,87 +163,61 @@ class MainController:
 
         # 7) 판사 의견
         ConsoleView.print_info("판사 의견 생성 중...")
-        judge_input = self.judge.prepare_input(
-            jury_path="jury_results.json",
-            lawyer_results_path=os.path.join("results", "lawyer_results.txt"),
-            prosecutor_results_path=os.path.join("results", "prosecutor_results.txt"),
-            lawyer_reply_path=os.path.join("reply_brief", "lawyer_reply_brief.txt"),
-            prosecutor_reply_path=os.path.join("reply_brief", "prosecutor_reply_brief.txt")
-        )
+        judge_input = {
+            "jury_results": jury_clean_results,
+            "lawyer_results": lawyer_text,
+            "prosecutor_results": prosecutor_text,
+            "lawyer_reply_brief": lawyer_reply,
+            "prosecutor_reply_brief": prosecutor_reply
+        }
         FileView.write_json("judge_input.json", judge_input)
 
         verdict = self.judge.decide(
             "judge_input.json", 
             model_type="gpt-3.5-turbo"
         )
+        
+        # verdict JSON 파싱 및 LaTeX 형식으로 변환
+        try:
+            verdict_json = json.loads(verdict)
+            # 모든 텍스트 필드를 LaTeX 형식으로 변환
+            for key in verdict_json:
+                if isinstance(verdict_json[key], str):
+                    verdict_json[key] = convert_to_latex(verdict_json[key])
+            verdict = json.dumps(verdict_json, ensure_ascii=False, indent=2)
+        except json.JSONDecodeError:
+            ConsoleView.print_info("[WARN] Judge response is not JSON. 기본값 사용.")
+            verdict_json = {}
+
         FileView.write_text("judge_verdict.txt", verdict)
 
         # 8) 판결문 PDF 생성
         ConsoleView.print_info("판결문 PDF 생성 중...")
-
-        # 변호사,판사 의견 참고용 judge_input.json
-        with open("judge_input.json", "r", encoding="utf-8") as f:
-            judge_input = json.load(f)
-        
-        # verdict 텍스트를 JSON으로 파싱
         try:
             verdict_json = json.loads(verdict)
         except json.JSONDecodeError:
             ConsoleView.print_info("[WARN] Judge response is not JSON. 기본값 사용.")
             verdict_json = {}
 
-        # 나중에 분리할 것.
-        _esc = re.compile(r'(?<!\\)_')   # 앞에 백슬래시가 없는 언더스코어만 매치
-        def escape_underscores_in_values(obj):
-            if isinstance(obj, dict):
-                return {k: escape_underscores_in_values(v) for k, v in obj.items()}
-            elif isinstance(obj, list):
-                return [escape_underscores_in_values(v) for v in obj]
-            elif isinstance(obj, str):
-                # r'\\_' 로 이미 이스케이프된 부분은 건드리지 않고,
-                # plain '_' 만 '\_' 로.
-                return _esc.sub(r'\\_', obj)
-            else:
-                return obj
-            
-        verdict_json = escape_underscores_in_values(verdict_json)
-        judge_input = escape_underscores_in_values(judge_input)
+        # 모든 언더스코어를 \_로 변환
+        def escape_all_underscores(text):
+            if not isinstance(text, str):
+                return text
+            # 이미 \_로 변환된 부분은 건너뛰기
+            return text.replace('\\_', '\_').replace('_', '\_')
 
-        # JSON 스키마에 맞춰 꺼내기
-        summary              = verdict_json.get("summary", "")
-        original_excerpt     = verdict_json.get("original_excerpt", summary)
-        source_file          = verdict_json.get("source_file", "")
-        source_page          = verdict_json.get("source_page", "")
-        background           = verdict_json.get("background", [])
-        original_defense     = verdict_json.get("original_defense", [])
-        defense_rebuttal     = verdict_json.get("defense_rebuttal", [])
-        original_prosecution = verdict_json.get("original_prosecution", [])
-        prosecution_rebuttal = verdict_json.get("prosecution_rebuttal", [])
-        sources              = verdict_json.get("sources", [])
-        verdict_text         = verdict_json.get("verdict", verdict)
-        classification       = verdict_json.get("classification", "")
-        
-        lawyer_results       = judge_input.get("lawyer_results", "")
-        prosecutor_results   = judge_input.get("prosecutor_results", "")
-
-
+        # 판결문 컨텍스트 구성
         context = {
-            "executive_summary":    verdict_json.get("executive_summary", ""),
-            "summary":              summary,
-            "original_excerpt":     original_excerpt,
-            "source_file":          source_file,
-            "source_page":          source_page,
-            "background":           background,
-            "original_defense":     original_defense,
-            "defense_rebuttal":     defense_rebuttal,
-            "original_prosecution": original_prosecution,
-            "prosecution_rebuttal": prosecution_rebuttal,
-            "sources":              sources,
-            "verdict":              verdict_text,
-            "classification":       classification,
-            "lawyer_results":        lawyer_results,
-            "prosecutor_results":    prosecutor_results
+            "executive_summary": verdict_json.get("executive_summary", ""),
+            "summary": verdict_json.get("summary", ""),
+            "original_excerpt": verdict_json.get("original_excerpt", ""),
+            "source_file": verdict_json.get("source_file", ""),
+            "source_page": verdict_json.get("source_page", ""),
+            "verdict": verdict_json.get("verdict", ""),
+            "classification": verdict_json.get("classification", ""),
+            # appendix 데이터는 이미 LaTeX 형식이므로 이스케이프 처리하지 않음
+            "lawyer_results": escape_all_underscores(judge_input.get("lawyer_results", "").replace("\\\\", "\\")),
+            "prosecutor_results": escape_all_underscores(judge_input.get("prosecutor_results", "").replace("\\\\", "\\"))
         }
-
 
         VerdictPdfService(context)

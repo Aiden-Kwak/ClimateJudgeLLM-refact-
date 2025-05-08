@@ -1,169 +1,97 @@
-\documentclass[12pt,a4paper]{article}
+\documentclass[12pt]{article}
+{% raw %}
 \usepackage[utf8]{inputenc}
-\usepackage{kotex}
-\usepackage{geometry}
-\geometry{margin=1in}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
 \usepackage{xcolor}
-\usepackage{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{csquotes}
+\usepackage{mdframed}
 
-\title{Climate Change Claim Review and Verdict Report}
+% 색상 정의
+\definecolor{darkblue}{RGB}{0,0,139}
+\definecolor{lightred}{RGB}{255,230,230}
+\definecolor{darkred}{RGB}{139,0,0}
 
-\date{\today}
+% 페이지 스타일 설정
+\setlength{\headheight}{15pt}  % 헤더 높이 조정
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{Climate Judge}
+\fancyhead[R]{\thepage}
+
+% 섹션 스타일 설정
+\titleformat{\section}[hang]
+{\normalfont\Large\bfseries\color{darkblue}}
+{}
+{0pt}
+{}
+
+\titleformat{\subsection}[hang]
+{\normalfont\large\bfseries\color{darkblue}}
+{}
+{0pt}
+{}
+
+% 섹션 번호 제거
+\setcounter{secnumdepth}{0}
+
+% 파일 이름 처리를 위한 명령어 정의
+\newcommand{\filename}[1]{{\ttfamily #1}}
+{% endraw %}
 
 \begin{document}
-\maketitle
 
 \begin{center}
-  \begin{tcolorbox}[
-    colframe=red!80!black,
-    colback=red!10,
-    sharp corners,
-    width=\textwidth,
-    boxrule=1pt,
-    left=2mm,
-    right=2mm,
-    top=1mm,
-    bottom=1mm,
-  ]
-    \centering
-    \textbf{\LARGE \textcolor{red}{Classification: {{ classification }}}}
-  \end{tcolorbox}
+\Large\textbf{Climate Judge Verdict}
 \end{center}
 
-% 0. Original Excerpt (Verbatim)
-\section*{0. Original Excerpt (Verbatim)}
-\begin{tcolorbox}[
-  colframe=black,
-  colback=gray!10,
-  boxrule=0.5pt,
-  sharp corners,
-  width=\textwidth,
-  left=2mm,
-  right=2mm,
-  top=1mm,
-  bottom=1mm,
+\vspace{0.5cm}
+
+% Classification을 강조된 박스로 표시
+{% raw %}
+\begin{mdframed}[
+    linecolor=darkred,
+    linewidth=2pt,
+    backgroundcolor=lightred,
+    innertopmargin=10pt,
+    innerbottommargin=10pt,
+    leftmargin=0pt,
+    rightmargin=0pt
 ]
-\small {{ original_excerpt }}
-\end{tcolorbox}
+{% endraw %}
+\begin{center}
+\Large\textbf{Classification: }{\Large\textbf{\color{darkred}{{ classification }}}}
+\end{center}
+{% raw %}\end{mdframed}{% endraw %}
 
-% 1. Executive Summary
-\section*{1. Executive Summary}
-\quad {{ executive_summary }}
+\vspace{0.5cm}
 
-% 2. Claim Summary
-\section*{2. Claim}
-\quad {{ summary }}
+\section{Executive Summary}
+{{ executive_summary }}
 
-% 3. Background
-\section*{3. Background}
-{% if background %}
-\begin{itemize}
-  {% for b in background %}
-  \item \textbf{ {{ b.name }} } --- {{ b.description }} \\
-        ({{ b.source_file }}, p.~{{ b.source_page }})
-  {% endfor %}
-\end{itemize}
-{% else %}
-\textit{No background items provided.}
-{% endif %}
+\section{Summary of Key Points}
+{{ summary }}
 
-% 4. Detailed Defense
-\section*{4. Defense’s Argument \& Rebuttal}
-\subsection*{4.1 Original Defense Argument}
-{% if original_defense %}
-\begin{itemize}
-  {% for od in original_defense %}
-  \item {{ od.quote }}  
-        ({{ od.source_file }}, p.~{{ od.source_page }})
-  {% endfor %}
-\end{itemize}
-{% else %}
-\textit{No original defense quotes provided.}
-{% endif %}
+\section{Original Evidence}
+{% raw %}\begin{quote}{% endraw %}
+{{ original_excerpt }}
 
-\subsection*{4.2 Defense’s Rebuttal}
-{% if defense_rebuttal %}
-\begin{itemize}
-  {% for dr in defense_rebuttal %}
-  \item \textbf{ {{ dr.point }} }:  
-        {{ dr.quote }}  
-        ({{ dr.source_file }}, p.~{{ dr.source_page }})
-  {% endfor %}
-\end{itemize}
-{% else %}
-\textit{No defense rebuttal provided.}
-{% endif %}
+\textit{Source: {% raw %}\filename{% endraw %}{ {{- source_file -}} }, p.{{ source_page }}}
+{% raw %}\end{quote}{% endraw %}
 
-% 5. Detailed Prosecution
-\section*{5. Prosecution’s Argument \& Rebuttal}
-\subsection*{5.1 Original Prosecution Argument}
-{% if original_prosecution %}
-\begin{itemize}
-  {% for op in original_prosecution %}
-  \item {{ op.quote }}  
-        ({{ op.source_file }}, p.~{{ op.source_page }})
-  {% endfor %}
-\end{itemize}
-{% else %}
-\textit{No original prosecution quotes provided.}
-{% endif %}
+\section{Verdict}
+{{ verdict }}
 
-\subsection*{5.2 Prosecution’s Rebuttal}
-{% if prosecution_rebuttal %}
-\begin{itemize}
-  {% for pr in prosecution_rebuttal %}
-  \item \textbf{ {{ pr.point }} }:  
-        {{ pr.quote }}  
-        ({{ pr.source_file }}, p.~{{ pr.source_page }})
-  {% endfor %}
-\end{itemize}
-{% else %}
-\textit{No prosecution rebuttal provided.}
-{% endif %}
+{% raw %}\appendix{% endraw %}
+\section{Appendix: Original Arguments}
+\subsection{Defense's Original Argument}
+{{ lawyer_results }}
 
-% 6. Sources
-\section*{6. Sources}
-{% if sources %}
-\begin{itemize}
-  {% for src in sources %}
-  \item {{ src.file }} --- pages: {{ src.pages | join(", ") }}
-  {% endfor %}
-\end{itemize}
-{% else %}
-\textit{No sources listed.}
-{% endif %}
-
-% 7. Conclusion
-\section*{7. Conclusion}
-\quad {{ verdict }}
-
-% 8. Reference Arguments
-\section*{8. Reference Arguments}
-
-\subsection*{Defense’s Full Arguments}
-\begin{tcolorbox}[
-  colframe=blue!80!black,
-  colback=blue!10,
-  sharp corners,
-  width=\textwidth,
-  boxrule=0.5pt,
-  left=2mm, right=2mm, top=1mm, bottom=1mm
-]
-  \small
-  {{ lawyer_results }}
-\end{tcolorbox}
-
-\subsection*{Prosecution’s Full Arguments}
-\begin{tcolorbox}[
-  colframe=green!80!black,
-  colback=green!10,
-  sharp corners,
-  width=\textwidth,
-  boxrule=0.5pt,
-  left=2mm, right=2mm, top=1mm, bottom=1mm
-]
-  \small
-  {{ prosecutor_results }}
-\end{tcolorbox}
+\subsection{Prosecution's Original Argument}
+{{ prosecutor_results }}
 
 \end{document}

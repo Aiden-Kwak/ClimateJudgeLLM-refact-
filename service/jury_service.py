@@ -19,11 +19,18 @@ class JuryService:
     def evaluate(self, questions: list[str], resource: Any, original_claim: str) -> dict:
         results: list[QuestionResult] = []
         with ThreadPoolExecutor(max_workers=10) as executor:
-            futures = {executor.submit(self.rag.query, resource, q, 15, True, 2): q for q in questions}
+            futures = {executor.submit(self.rag.query, resource, q, 15, True, 1): q for q in questions}
             for future in as_completed(futures):
-                q = futures[future]
-                response, evidence = future.result()
-                results.append(QuestionResult(q, response, evidence))
+                try:
+                    q = futures[future]
+                    response, evidence = future.result()
+                    if response and evidence:  # 응답과 증거가 모두 있는 경우만 추가
+                        results.append(QuestionResult(q, response, evidence))
+                except Exception as e:
+                    # 파싱 실패나 토큰 초과 등의 에러 발생 시 해당 질문은 건너뜀
+                    print(f"Error processing question '{futures[future]}': {str(e)}")
+                    continue
+                    
         doc = JuryDocument(
             introduction=f"This document presents the jury's analysis to evaluate the original claim: '{original_claim}'. Below are the detailed responses and evidence for each sub-question.",
             questions=results,
