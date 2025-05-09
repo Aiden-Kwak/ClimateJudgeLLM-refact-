@@ -199,6 +199,9 @@ class MainController:
             ConsoleView.print_info("[WARN] Judge response is not JSON. 기본값 사용.")
             verdict_json = {}
 
+        # .env에서 CLAIM 가져오기
+        claim_text = os.getenv("CLAIM", "")
+
         # 모든 언더스코어를 \_로 변환
         def escape_all_underscores(text):
             if not isinstance(text, str):
@@ -206,18 +209,31 @@ class MainController:
             # 이미 \_로 변환된 부분은 건너뛰기
             return text.replace('\\_', '\_').replace('_', '\_')
 
+        # 모든 \\section을 \section으로 변환
+        def normalize_sections(text):
+            if not isinstance(text, str):
+                return text
+            text = text.replace('\\\\section', '\\section')
+            text = text.replace('\\\\section*', '\\section*')
+            text = text.replace('\\\\quad', '\\quad')
+            text = text.replace('\\\\begin', '\\begin')
+            text = text.replace('\\\\end', '\\end')
+            text = text.replace('\\\\item', '\\item')
+            return text
+
         # 판결문 컨텍스트 구성
         context = {
-            "executive_summary": verdict_json.get("executive_summary", ""),
-            "summary": verdict_json.get("summary", ""),
-            "original_excerpt": verdict_json.get("original_excerpt", ""),
-            "source_file": verdict_json.get("source_file", ""),
-            "source_page": verdict_json.get("source_page", ""),
-            "verdict": verdict_json.get("verdict", ""),
-            "classification": verdict_json.get("classification", ""),
+            "claim": normalize_sections(convert_to_latex(claim_text)),  # Claim 추가
+            "executive_summary": normalize_sections(convert_to_latex(verdict_json.get("executive_summary", ""))),
+            "summary": normalize_sections(convert_to_latex(verdict_json.get("summary", ""))),
+            "original_excerpt": normalize_sections(convert_to_latex(verdict_json.get("original_excerpt", ""))),
+            "source_file": normalize_sections(convert_to_latex(verdict_json.get("source_file", ""))),
+            "source_page": normalize_sections(convert_to_latex(str(verdict_json.get("source_page", "")))),
+            "verdict": normalize_sections(convert_to_latex(verdict_json.get("verdict", ""))),
+            "classification": normalize_sections(convert_to_latex(verdict_json.get("classification", ""))),
             # appendix 데이터는 이미 LaTeX 형식이므로 이스케이프 처리하지 않음
-            "lawyer_results": escape_all_underscores(judge_input.get("lawyer_results", "").replace("\\\\", "\\")),
-            "prosecutor_results": escape_all_underscores(judge_input.get("prosecutor_results", "").replace("\\\\", "\\"))
+            "lawyer_results": escape_all_underscores(normalize_sections(convert_to_latex(judge_input.get("lawyer_results", "").replace("\\", "\\")))),
+            "prosecutor_results": escape_all_underscores(normalize_sections(convert_to_latex(judge_input.get("prosecutor_results", "").replace("\\", "\\"))))
         }
 
         VerdictPdfService(context)

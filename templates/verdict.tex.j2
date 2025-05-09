@@ -70,18 +70,27 @@
 
 \vspace{0.5cm}
 
+\section{Claim}
+
+% Claim 내용 박스 설정
+\definecolor{lightgray}{RGB}{240,240,240}
+\begin{mdframed}[
+    linecolor=black,
+    linewidth=1pt,
+    backgroundcolor=lightgray,
+    innertopmargin=10pt,
+    innerbottommargin=10pt,
+    leftmargin=0pt,
+    rightmargin=0pt
+]
+{{ claim }}
+\end{mdframed}
+
 \section{Executive Summary}
 {{ executive_summary }}
 
 \section{Summary of Key Points}
 {{ summary }}
-
-\section{Original Evidence}
-{% raw %}\begin{quote}{% endraw %}
-{{ original_excerpt }}
-
-\textit{Source: {% raw %}\filename{% endraw %}{ {{- source_file -}} }, p.{{ source_page }}}
-{% raw %}\end{quote}{% endraw %}
 
 \section{Verdict}
 {{ verdict }}
