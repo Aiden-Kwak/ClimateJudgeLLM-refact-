@@ -174,7 +174,7 @@ class MainController:
 
         verdict = self.judge.decide(
             "judge_input.json", 
-            model_type="gpt-3.5-turbo"
+            model_type="gpt-4.1-mini"
         )
         
         # verdict JSON 파싱 및 LaTeX 형식으로 변환
