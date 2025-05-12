@@ -1,5 +1,5 @@
 \documentclass[12pt]{article}
-{% raw %}
+
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
@@ -9,38 +9,45 @@
 \usepackage{titlesec}
 \usepackage{csquotes}
 \usepackage{mdframed}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{multirow}
 
+{% raw %}
 % 색상 정의
 \definecolor{darkblue}{RGB}{0,0,139}
 \definecolor{lightred}{RGB}{255,230,230}
 \definecolor{darkred}{RGB}{139,0,0}
+\definecolor{lightgray}{RGB}{240,240,240}
+\definecolor{midgray}{RGB}{180,180,180}
+\definecolor{lightgreen}{RGB}{230,255,230}
+\definecolor{darkgreen}{RGB}{0,100,0}
 
 % 페이지 스타일 설정
-\setlength{\headheight}{15pt}  % 헤더 높이 조정
+\setlength{\headheight}{15pt}
 \pagestyle{fancy}
 \fancyhf{}
 \renewcommand{\headrulewidth}{0.4pt}
 \fancyhead[L]{Climate Judge}
 \fancyhead[R]{\thepage}
 
-% 섹션 스타일 설정
-\titleformat{\section}[hang]
-{\normalfont\Large\bfseries\color{darkblue}}
-{}
-{0pt}
-{}
-
-\titleformat{\subsection}[hang]
-{\normalfont\large\bfseries\color{darkblue}}
-{}
-{0pt}
-{}
-
-% 섹션 번호 제거
+% 섹션 스타일
+\titleformat{\section}[hang]{\normalfont\Large\bfseries\color{darkblue}}{}{0pt}{}
+\titleformat{\subsection}[hang]{\normalfont\large\bfseries\color{darkblue}}{}{0pt}{}
 \setcounter{secnumdepth}{0}
 
-% 파일 이름 처리를 위한 명령어 정의
+% 파일명 표시
 \newcommand{\filename}[1]{{\ttfamily #1}}
+
+% 점수 표시 막대
+\newcommand{\scorebar}[1]{%
+  \begin{tikzpicture}
+    \pgfmathsetmacro{\barlen}{#1 * 1.0}
+    \fill[midgray] (0,0) rectangle (5,0.4);
+    \fill[darkblue] (0,0) rectangle (\barlen,0.4);
+    \node[right] at (5.2,0.2) {\textbf{#1}/5};
+  \end{tikzpicture}%
+}
 {% endraw %}
 
 \begin{document}
@@ -51,37 +58,27 @@
 
 \vspace{0.5cm}
 
-% Classification을 강조된 박스로 표시
-{% raw %}
 \begin{mdframed}[
     linecolor=darkred,
     linewidth=2pt,
     backgroundcolor=lightred,
     innertopmargin=10pt,
-    innerbottommargin=10pt,
-    leftmargin=0pt,
-    rightmargin=0pt
+    innerbottommargin=10pt
 ]
-{% endraw %}
 \begin{center}
 \Large\textbf{Classification: }{\Large\textbf{\color{darkred}{{ classification }}}}
 \end{center}
-{% raw %}\end{mdframed}{% endraw %}
+\end{mdframed}
 
 \vspace{0.5cm}
 
 \section{Claim}
-
-% Claim 내용 박스 설정
-\definecolor{lightgray}{RGB}{240,240,240}
 \begin{mdframed}[
     linecolor=black,
     linewidth=1pt,
     backgroundcolor=lightgray,
     innertopmargin=10pt,
-    innerbottommargin=10pt,
-    leftmargin=0pt,
-    rightmargin=0pt
+    innerbottommargin=10pt
 ]
 {{ claim }}
 \end{mdframed}
@@ -92,10 +89,62 @@
 \section{Summary of Key Points}
 {{ summary }}
 
+{% if justification is defined %}
+\section{Classification Justification}
+\begin{mdframed}[
+    linecolor=darkgreen,
+    linewidth=1pt,
+    backgroundcolor=lightgreen,
+    innertopmargin=10pt,
+    innerbottommargin=10pt
+]
+{{ justification }}
+\end{mdframed}
+
+{% if scores is defined %}
+\clearpage
+\subsection{Evaluation Scores}
+\begin{tabular}{lp{8cm}}
+{% if scores.scientific_plausibility is defined %}
+\textbf{Scientific Plausibility} & \scorebar{ {{ scores.scientific_plausibility }} } \\[0.2cm]
+{% endif %}
+{% if scores.logical_coherence is defined %}
+\textbf{Logical Coherence} & \scorebar{ {{ scores.logical_coherence }} } \\[0.2cm]
+{% endif %}
+{% if scores.scope_appropriateness is defined %}
+\textbf{Scope Appropriateness} & \scorebar{ {{ scores.scope_appropriateness }} } \\[0.2cm]
+{% endif %}
+{% if scores.causal_justification is defined %}
+\textbf{Causal Justification} & \scorebar{ {{ scores.causal_justification }} } \\[0.2cm]
+{% endif %}
+{% if scores.speculativeness is defined %}
+\textbf{Speculativeness} & \scorebar{ {{ scores.speculativeness }} } \\
+{% endif %}
+\end{tabular}
+{% endif %}
+{% endif %}
+
+\section{Key Evidence}
+\begin{mdframed}[
+    linecolor=darkblue,
+    linewidth=1pt,
+    backgroundcolor=lightgray,
+    innertopmargin=10pt,
+    innerbottommargin=10pt
+]
+{{ original_excerpt }}
+
+\vspace{0.3cm}
+\textbf{Source:} \filename{ {{ source_file }} }, Page: {{ source_page }}
+\end{mdframed}
+
 \section{Verdict}
 {{ verdict }}
 
-{% raw %}\appendix{% endraw %}
+{% raw %}
+\appendix
+{% endraw %}
+
 \section{Appendix: Original Arguments}
 \subsection{Defense's Original Argument}
 {{ lawyer_results }}

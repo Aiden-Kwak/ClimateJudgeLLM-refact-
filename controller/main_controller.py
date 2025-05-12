@@ -12,6 +12,7 @@ from service.jury_service import JuryService
 from service.lawyer_service import LawyerService
 from service.prosecutor_service import ProsecutorService
 from service.judge_service import JudgeService
+from service.classification_service import ClassificationService
 from view.console_view import ConsoleView
 from view.file_view import FileView
 from service.pdf_service import VerdictPdfService
@@ -76,6 +77,7 @@ class MainController:
         self.jury       = JuryService(self.rag)
         self.lawyer     = LawyerService(self.llm)
         self.prosecutor = ProsecutorService(self.llm)
+        self.classification = ClassificationService(self.llm)
         self.judge      = JudgeService(self.llm)
         self.jury_clean = JuryCleanService(self.llm)
 
@@ -161,9 +163,10 @@ class MainController:
             lawyer_reply
         )
 
-        # 7) 판사 의견
-        ConsoleView.print_info("판사 의견 생성 중...")
+        # 7) 판사 입력 준비
+        ConsoleView.print_info("판사 입력 준비 중...")
         judge_input = {
+            "claim": claim,  # claim 추가
             "jury_results": jury_clean_results,
             "lawyer_results": lawyer_text,
             "prosecutor_results": prosecutor_text,
@@ -171,7 +174,9 @@ class MainController:
             "prosecutor_reply_brief": prosecutor_reply
         }
         FileView.write_json("judge_input.json", judge_input)
-
+        
+        # 7-1) 판사 의견 생성
+        ConsoleView.print_info("판사 의견 생성 중...")
         verdict = self.judge.decide(
             "judge_input.json", 
             model_type="gpt-4.1-mini"
@@ -190,17 +195,46 @@ class MainController:
             verdict_json = {}
 
         FileView.write_text("judge_verdict.txt", verdict)
+        
+        # 7-2) 판사 판결에 대한 분류 수행
+        ConsoleView.print_info("판사 판결에 대한 분류 수행 중...")
+        # 판사 판결과 함께 judge_input 확장
+        classification_input = judge_input.copy()
+        classification_input["verdict"] = verdict_json
+        FileView.write_json("classification_input.json", classification_input)
+        
+        # 분류 실행
+        classification_results = self.classification.classify(
+            "classification_input.json",
+            model_type="gpt-3.5-turbo"
+        )
+        
+        # classification_results 저장
+        FileView.write_text("classification_results.txt", classification_results)
 
         # 8) 판결문 PDF 생성
         ConsoleView.print_info("판결문 PDF 생성 중...")
         try:
-            verdict_json = json.loads(verdict)
-        except json.JSONDecodeError:
-            ConsoleView.print_info("[WARN] Judge response is not JSON. 기본값 사용.")
+            # classification_results 파싱
+            try:
+                classification_json = json.loads(classification_results)
+                # PDF 컨텍스트에 classification 결과 추가
+                verdict_json["justification"] = classification_json.get("justification", "")
+                verdict_json["scores"] = classification_json.get("scores", {})
+                verdict_json["classification"] = classification_json.get("classification", verdict_json.get("classification", ""))
+                # key_evidence가 있으면 original_excerpt로 사용 (만약 판사가 지정하지 않았다면)
+                if "key_evidence" in classification_json and (not verdict_json.get("original_excerpt") or verdict_json.get("original_excerpt") == ""):
+                    verdict_json["original_excerpt"] = classification_json.get("key_evidence", "")
+                    verdict_json["source_file"] = classification_json.get("source_file", "")
+                    verdict_json["source_page"] = classification_json.get("source_page", 0)
+            except json.JSONDecodeError:
+                ConsoleView.print_info("[WARN] Classification response is not JSON. 판사 결과만 사용.")
+        except Exception as e:
+            ConsoleView.print_info(f"[ERROR] PDF 준비 중 오류 발생: {e}")
             verdict_json = {}
 
         # .env에서 CLAIM 가져오기
-        claim_text = os.getenv("CLAIM", "")
+        claim_text = os.getenv("CLAIM", claim)  # 기본값으로 입력 claim 사용
 
         # 모든 언더스코어를 \_로 변환
         def escape_all_underscores(text):
@@ -231,6 +265,9 @@ class MainController:
             "source_page": normalize_sections(convert_to_latex(str(verdict_json.get("source_page", "")))),
             "verdict": normalize_sections(convert_to_latex(verdict_json.get("verdict", ""))),
             "classification": normalize_sections(convert_to_latex(verdict_json.get("classification", ""))),
+            # classification 추가 데이터
+            "justification": normalize_sections(convert_to_latex(verdict_json.get("justification", ""))),
+            "scores": verdict_json.get("scores", {}),
             # appendix 데이터는 이미 LaTeX 형식이므로 이스케이프 처리하지 않음
             "lawyer_results": escape_all_underscores(normalize_sections(convert_to_latex(judge_input.get("lawyer_results", "").replace("\\", "\\")))),
             "prosecutor_results": escape_all_underscores(normalize_sections(convert_to_latex(judge_input.get("prosecutor_results", "").replace("\\", "\\"))))
