@@ -117,7 +117,7 @@ CLAIM="Global warming is not progressing as predicted by climate models. This is
 ```
 
 ## 4. UML
-<img src="docs/llm_puml.png" width="900px">
+<img src="docs/llm_puml2.png" width="900px">
 
 ## 5. Execution flow
 ```mermaid

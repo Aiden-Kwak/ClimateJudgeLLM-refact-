@@ -43,6 +43,13 @@ class JudgePromptBuilder:
           • O₃ should be written as O$_3$
           • 10⁵ should be written as 10$^5$
         - NEVER use Unicode subscripts (₀₁₂₃₄₅₆₇₈₉) or superscripts (⁰¹²³⁴⁵⁶⁷⁸⁹)
+        - Format Greek letters and special symbols properly in LaTeX:
+          • μ (mu) should be written as $\\mu$
+          • α (alpha) should be written as $\\alpha$
+          • β (beta) should be written as $\\beta$
+          • ± (plus-minus) should be written as $\\pm$
+          • × (multiplication) should be written as $\\times$
+          • ≈ (approximately equal) should be written as $\\approx$
 
         ## Claim to Evaluate
         {claim}

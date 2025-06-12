@@ -1,14 +1,14 @@
 {
-    "classification": "Inaccurate",
-    "justification": "The claim is contradicted by strong scientific evidence from IPCC reports, including statements that human activities, driven by economic and population growth, have led to unprecedented levels of carbon dioxide in the atmosphere and that human-induced emissions are the dominant cause of observed warming since the mid-20th century. Consensus among climate scientists also supports the significant impact of anthropogenic factors on global temperature increases and greenhouse gas concentrations.",
+    "classification": "Unsupported",
+    "justification": "The claim lacks direct, credible scientific evidence confirming the deliberate spraying of chemical gases with aluminum, barium, and other metals by aircraft to manipulate the weather. While the prosecution references the presence of these metals in the atmosphere and regulatory frameworks governing aircraft operations, none of the cited evidence explicitly supports the specific claim made. The absence of direct evidence confirming such activities weakens the claim's credibility and leaves it unsupported.",
     "scores": {
         "scientific_plausibility": 1,
-        "logical_coherence": 1,
-        "scope_appropriateness": 1,
+        "logical_coherence": 3,
+        "scope_appropriateness": 3,
         "causal_justification": 1,
-        "speculativeness": 1
+        "speculativeness": 3
     },
-    "key_evidence": "Human activities have increased atmospheric concentrations of carbon dioxide, methane, and nitrous oxide to unprecedented levels in at least 800,000 years. Their effects, along with other anthropogenic drivers, have been the dominant cause of observed warming since the mid-20th century.",
-    "source_file": "SYR_AR5_FINAL_full_wcover.pdf",
-    "source_page": 21
+    "key_evidence": "There is no scientific basis or evidence that aircraft are purposefully spraying chemical gas to manipulate the weather. The provided knowledge does not mention any studies or evidence related to this claim.",
+    "source_file": "Global_Warming_of_1.5.pdf",
+    "source_page": 437
 }

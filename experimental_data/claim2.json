@@ -1,0 +1,100 @@
+{
+  "gpt-3.5-turbo_traditional": {
+    "classification": "Misleading",
+    "confidence": 0.7,
+    "rationale": "While some individual aspects of the claim may be true, such as specific polar bear populations increasing and coral cover in the Great Barrier Reef, the overall claim is misleading because it presents a selective view of the impacts of climate change. It fails to acknowledge the broader negative trends and impacts of climate change, such as overall decline in polar bear populations, coral bleaching events in the Great Barrier Reef, and increasing heat-related deaths in many regions.",
+    "suggested_sources": {
+      "1": "IPCC Special Report on the Ocean and Cryosphere in a Changing Climate",
+      "2": "Reports from the National Oceanic and Atmospheric Administration (NOAA) on coral reef health",
+      "3": "Studies on the impacts of climate change on wildlife populations"
+    },
+    "model": "gpt-3.5-turbo",
+    "method": "traditional",
+    "execution_time": 2.633655071258545
+  },
+  "gpt-3.5-turbo_rag": {
+    "classification": "Misleading",
+    "confidence": 0.8,
+    "rationale": "주장은 일부 사실을 기반으로 하지만, 전반적인 기후 변화에 대한 정보를 왜곡하여 잘못된 인상을 줌.",
+    "evidence_used": "기후 변화 관련 문맥 정보에서는 온난화로 인한 산호초 멸종과 대규모 사망 사례가 다루어지고 있으며, 대부분의 산호초가 사멸할 것으로 예상되고 있음을 언급함.",
+    "model": "gpt-3.5-turbo",
+    "method": "rag",
+    "retrieved_documents": [
+      {
+        "source": "Unknown",
+        "page": 0,
+        "score": 0.7426246404647827
+      },
+      {
+        "source": "Unknown",
+        "page": 0,
+        "score": 0.7939571738243103
+      },
+      {
+        "source": "Unknown",
+        "page": 0,
+        "score": 0.7966306209564209
+      },
+      {
+        "source": "Unknown",
+        "page": 0,
+        "score": 0.8136137127876282
+      },
+      {
+        "source": "Unknown",
+        "page": 0,
+        "score": 0.8186181783676147
+      }
+    ],
+    "execution_time": 4.189759969711304
+  },
+  "gpt-4o_traditional": {
+    "classification": "오해의 소지가 있음 (Misleading)",
+    "confidence": 0.8,
+    "rationale": "The claim includes elements that are technically correct but can lead to a misleading impression about the overall impact of climate change. While some studies suggest that certain polar bear populations have stabilized or increased, others are declining, and the overall trend is concerning due to habitat loss from melting ice. The Great Barrier Reef has shown some recovery in coral cover, but this is not uniform across all areas and does not negate the long-term threats from climate change, such as coral bleaching. Extreme-heat deaths may have declined in some regions due to better adaptation and healthcare, but this does not imply that the threat of extreme heat is decreasing globally. The statement oversimplifies complex issues and could mislead people about the severity and multifaceted nature of climate change impacts.",
+    "suggested_sources": [
+      "Peer-reviewed climate science journals",
+      "Reports from the Intergovernmental Panel on Climate Change (IPCC)",
+      "Research from reputable environmental organizations like the World Wildlife Fund (WWF) and the National Oceanic and Atmospheric Administration (NOAA)"
+    ],
+    "model": "gpt-4o",
+    "method": "traditional",
+    "execution_time": 5.756689071655273
+  },
+  "gpt-4o_rag": {
+    "분류": "근거 부족",
+    "신뢰도": 0.8,
+    "이유": "제공된 문맥 정보는 주로 기후 변화가 산호초에 미치는 부정적인 영향에 초점을 맞추고 있으며, 북극곰 개체수 증가나 극심한 더위로 인한 사망 감소에 대한 정보는 포함되어 있지 않습니다. 따라서 주장을 확인하거나 반박할 수 있는 충분한 증거가 없습니다.",
+    "사용한 증거": "제공된 문맥 정보는 산호초의 대규모 백화 현상과 사망률 증가에 대한 내용만 포함하고 있으며, 북극곰 개체수나 극심한 더위로 인한 사망률에 대한 정보는 없습니다.",
+    "model": "gpt-4o",
+    "method": "rag",
+    "retrieved_documents": [
+      {
+        "source": "Unknown",
+        "page": 0,
+        "score": 0.7426246404647827
+      },
+      {
+        "source": "Unknown",
+        "page": 0,
+        "score": 0.7939571738243103
+      },
+      {
+        "source": "Unknown",
+        "page": 0,
+        "score": 0.7966306209564209
+      },
+      {
+        "source": "Unknown",
+        "page": 0,
+        "score": 0.8136137127876282
+      },
+      {
+        "source": "Unknown",
+        "page": 0,
+        "score": 0.8186181783676147
+      }
+    ],
+    "execution_time": 4.17807674407959
+  }
+}

@@ -52,13 +52,122 @@ def convert_to_latex(text: str) -> str:
         '⁶': '$^6$',
         '⁷': '$^7$',
         '⁸': '$^8$',
-        '⁹': '$^9$'
+        '⁹': '$^9$',
+        # 그리스 문자 및 특수 유니코드 문자 추가
+        'μ': '$\\mu$',
+        'α': '$\\alpha$',
+        'β': '$\\beta$',
+        'γ': '$\\gamma$',
+        'Γ': '$\\Gamma$',
+        'δ': '$\\delta$',
+        'Δ': '$\\Delta$',
+        'ε': '$\\varepsilon$',
+        'ζ': '$\\zeta$',
+        'η': '$\\eta$',
+        'θ': '$\\theta$',
+        'Θ': '$\\Theta$',
+        'ι': '$\\iota$',
+        'κ': '$\\kappa$',
+        'λ': '$\\lambda$',
+        'Λ': '$\\Lambda$',
+        'ν': '$\\nu$',
+        'ξ': '$\\xi$',
+        'Ξ': '$\\Xi$',
+        'π': '$\\pi$',
+        'Π': '$\\Pi$',
+        'ρ': '$\\rho$',
+        'σ': '$\\sigma$',
+        'Σ': '$\\Sigma$',
+        'τ': '$\\tau$',
+        'υ': '$\\upsilon$',
+        'φ': '$\\phi$',
+        'Φ': '$\\Phi$',
+        'χ': '$\\chi$',
+        'ψ': '$\\psi$',
+        'Ψ': '$\\Psi$',
+        'ω': '$\\omega$',
+        'Ω': '$\\Omega$',
+        '±': '$\\pm$',
+        '×': '$\\times$',
+        '÷': '$\\div$',
+        '∞': '$\\infty$',
+        '≤': '$\\leq$',
+        '≥': '$\\geq$',
+        '≠': '$\\neq$',
+        '≈': '$\\approx$',
+        '∑': '$\\sum$',
+        '∏': '$\\prod$',
+        '∫': '$\\int$',
+        '√': '$\\sqrt{}$',
+        '∂': '$\\partial$',
+        '∇': '$\\nabla$',
+        '∝': '$\\propto$',
+        '∈': '$\\in$',
+        '∉': '$\\notin$',
+        '∀': '$\\forall$',
+        '∃': '$\\exists$',
+        '∅': '$\\emptyset$',
+        '∩': '$\\cap$',
+        '∪': '$\\cup$',
+        '⊂': '$\\subset$',
+        '⊃': '$\\supset$',
+        '⊆': '$\\subseteq$',
+        '⊇': '$\\supseteq$'
     }
     
     # 가장 긴 패턴부터 먼저 치환 (예: CO₂가 C, O, ₂ 각각으로 치환되는 것 방지)
     patterns = sorted(replacements.keys(), key=len, reverse=True)
     for pattern in patterns:
         text = text.replace(pattern, replacements[pattern])
+    
+    return text
+
+# LaTeX 아이템 목록을 안전하게 처리하는 함수
+def sanitize_latex_items(text: str) -> str:
+    if not text:
+        return text
+    
+    # \begin{itemize}와 \end{itemize} 사이의 내용을 찾아서 처리
+    item_pattern = r"\\begin\{itemize\}(.*?)\\end\{itemize\}"
+    
+    def process_itemize(match):
+        content = match.group(1)
+        # \item 태그가 백슬래시 없이 있는 경우만 수정 (이미 이스케이프된 경우 제외)
+        content = re.sub(r"(?<!\\)\\item", "\\\\item", content)
+        # \textit{...} 내부의 언더스코어 처리
+        content = re.sub(r"\\textit\{([^}]*?)_([^}]*?)\}", 
+                         lambda m: f"\\textit{{{m.group(1)}\\_\\allowbreak{m.group(2)}}}", 
+                         content)
+        return f"\\begin{{itemize}}{content}\\end{{itemize}}"
+    
+    # 정규표현식을 사용하여 itemize 환경을 찾고 처리
+    text = re.sub(item_pattern, process_itemize, text, flags=re.DOTALL)
+    
+    return text
+
+# 파일 경로 이름에 있는 언더스코어를 처리하는 함수
+def sanitize_file_paths(text: str) -> str:
+    if not text:
+        return text
+    
+    # 파일명 패턴을 찾아서 언더스코어 이스케이프 처리
+    file_pattern = r'([A-Za-z0-9]+)_([A-Za-z0-9]+)_([A-Za-z0-9]+)\.pdf'
+    textit_file_pattern = r'\\textit\{([A-Za-z0-9]+)_([A-Za-z0-9]+)_([A-Za-z0-9]+)\.pdf\}'
+    filename_pattern = r'\\filename\{([A-Za-z0-9]+)_([A-Za-z0-9]+)_([A-Za-z0-9]+)\.pdf\}'
+    
+    def escape_underscores_in_filename(match):
+        return f"{match.group(1)}\\_\\allowbreak{match.group(2)}\\_\\allowbreak{match.group(3)}.pdf"
+    
+    def escape_underscores_in_textit(match):
+        return f"\\textit{{{match.group(1)}\\_\\allowbreak{match.group(2)}\\_\\allowbreak{match.group(3)}.pdf}}"
+    
+    def escape_underscores_in_filename_cmd(match):
+        return f"\\filename{{{match.group(1)}\\_\\allowbreak{match.group(2)}\\_\\allowbreak{match.group(3)}.pdf}}"
+    
+    # 정규표현식을 사용하여 파일명 패턴 대체
+    text = re.sub(filename_pattern, escape_underscores_in_filename_cmd, text)
+    text = re.sub(textit_file_pattern, escape_underscores_in_textit, text)
+    text = re.sub(file_pattern, escape_underscores_in_filename, text)
     
     return text
 
@@ -117,6 +226,9 @@ class MainController:
         )
         # LaTeX 형식으로 변환
         lawyer_text = convert_to_latex(lawyer_text)
+        # LaTeX 아이템 목록 및 파일경로 처리
+        lawyer_text = sanitize_latex_items(lawyer_text)
+        lawyer_text = sanitize_file_paths(lawyer_text)
         FileView.write_text(
             os.path.join("results", "lawyer_results.txt"), 
             lawyer_text
@@ -131,6 +243,9 @@ class MainController:
         )
         # LaTeX 형식으로 변환
         prosecutor_text = convert_to_latex(prosecutor_text)
+        # LaTeX 아이템 목록 및 파일경로 처리
+        prosecutor_text = sanitize_latex_items(prosecutor_text)
+        prosecutor_text = sanitize_file_paths(prosecutor_text)
         FileView.write_text(
             os.path.join("results", "prosecutor_results.txt"), 
             prosecutor_text
@@ -145,6 +260,9 @@ class MainController:
         )
         # LaTeX 형식으로 변환
         prosecutor_reply = convert_to_latex(prosecutor_reply)
+        # LaTeX 아이템 목록 및 파일경로 처리
+        prosecutor_reply = sanitize_latex_items(prosecutor_reply)
+        prosecutor_reply = sanitize_file_paths(prosecutor_reply)
         FileView.write_text(
             os.path.join("reply_brief", "prosecutor_reply_brief.txt"),
             prosecutor_reply
@@ -158,6 +276,9 @@ class MainController:
         )
         # LaTeX 형식으로 변환
         lawyer_reply = convert_to_latex(lawyer_reply)
+        # LaTeX 아이템 목록 및 파일경로 처리
+        lawyer_reply = sanitize_latex_items(lawyer_reply)
+        lawyer_reply = sanitize_file_paths(lawyer_reply)
         FileView.write_text(
             os.path.join("reply_brief", "lawyer_reply_brief.txt"),
             lawyer_reply
@@ -189,6 +310,9 @@ class MainController:
             for key in verdict_json:
                 if isinstance(verdict_json[key], str):
                     verdict_json[key] = convert_to_latex(verdict_json[key])
+                    # LaTeX 아이템 목록 및 파일경로 처리
+                    verdict_json[key] = sanitize_latex_items(verdict_json[key])
+                    verdict_json[key] = sanitize_file_paths(verdict_json[key])
             verdict = json.dumps(verdict_json, ensure_ascii=False, indent=2)
         except json.JSONDecodeError:
             ConsoleView.print_info("[WARN] Judge response is not JSON. 기본값 사용.")
@@ -218,6 +342,17 @@ class MainController:
             # classification_results 파싱
             try:
                 classification_json = json.loads(classification_results)
+                # 텍스트 필드를 LaTeX 형식으로 변환
+                if "justification" in classification_json and isinstance(classification_json["justification"], str):
+                    classification_json["justification"] = convert_to_latex(classification_json["justification"])
+                    classification_json["justification"] = sanitize_latex_items(classification_json["justification"])
+                    classification_json["justification"] = sanitize_file_paths(classification_json["justification"])
+                
+                if "key_evidence" in classification_json and isinstance(classification_json["key_evidence"], str):
+                    classification_json["key_evidence"] = convert_to_latex(classification_json["key_evidence"])
+                    classification_json["key_evidence"] = sanitize_latex_items(classification_json["key_evidence"])
+                    classification_json["key_evidence"] = sanitize_file_paths(classification_json["key_evidence"])
+                
                 # PDF 컨텍스트에 classification 결과 추가
                 verdict_json["justification"] = classification_json.get("justification", "")
                 verdict_json["scores"] = classification_json.get("scores", {})
@@ -236,41 +371,68 @@ class MainController:
         # .env에서 CLAIM 가져오기
         claim_text = os.getenv("CLAIM", claim)  # 기본값으로 입력 claim 사용
 
-        # 모든 언더스코어를 \_로 변환
+        # 모든 언더스코어를 \_로 변환하는 함수 개선
         def escape_all_underscores(text):
             if not isinstance(text, str):
                 return text
-            # 이미 \_로 변환된 부분은 건너뛰기
-            return text.replace('\\_', '\_').replace('_', '\_')
+            
+            # 이미 이스케이프된 언더스코어 패턴 처리
+            text = re.sub(r'\\+_', lambda m: '\\' * (len(m.group(0)) // 2) + '_', text)
+            
+            # 일반 언더스코어 이스케이프 (이미 이스케이프된 것은 제외)
+            text = re.sub(r'(?<!\\)_', r'\\_', text)
+            
+            return text
 
-        # 모든 \\section을 \section으로 변환
+        # 모든 \\section을 \section으로 변환하는 함수 개선
         def normalize_sections(text):
             if not isinstance(text, str):
                 return text
-            text = text.replace('\\\\section', '\\section')
-            text = text.replace('\\\\section*', '\\section*')
-            text = text.replace('\\\\quad', '\\quad')
-            text = text.replace('\\\\begin', '\\begin')
-            text = text.replace('\\\\end', '\\end')
-            text = text.replace('\\\\item', '\\item')
+            
+            # 이중 백슬래시로 시작하는 LaTeX 명령어들 정규화
+            latex_commands = [
+                'section', 'section*', 'subsection', 'subsection*',
+                'quad', 'begin', 'end', 'item', 'textit', 'textbf',
+                'emph', 'it', 'bf', 'underline', 'hline', 'filename'
+            ]
+            
+            for cmd in latex_commands:
+                # 이스케이프된 이중 백슬래시 패턴을 단일 백슬래시로 변환
+                text = text.replace(f'\\\\{cmd}', f'\\{cmd}')
+            
             return text
 
+        # 특수 LaTeX 문자 이스케이프 처리
+        def escape_latex_special_chars(text):
+            if not isinstance(text, str):
+                return text
+                
+            # 일반 텍스트 환경에서 특수문자 이스케이프
+            special_chars = ['%', '&', '$', '#', '{', '}']
+            
+            # 이미 이스케이프된 특수문자는 건너뜀
+            for char in special_chars:
+                escape_pattern = f'\\{char}'
+                text = text.replace(char, escape_pattern).replace(f'{escape_pattern}{escape_pattern}', escape_pattern)
+                
+            return text
+            
         # 판결문 컨텍스트 구성
         context = {
-            "claim": normalize_sections(convert_to_latex(claim_text)),  # Claim 추가
-            "executive_summary": normalize_sections(convert_to_latex(verdict_json.get("executive_summary", ""))),
-            "summary": normalize_sections(convert_to_latex(verdict_json.get("summary", ""))),
-            "original_excerpt": normalize_sections(convert_to_latex(verdict_json.get("original_excerpt", ""))),
-            "source_file": normalize_sections(convert_to_latex(verdict_json.get("source_file", ""))),
-            "source_page": normalize_sections(convert_to_latex(str(verdict_json.get("source_page", "")))),
-            "verdict": normalize_sections(convert_to_latex(verdict_json.get("verdict", ""))),
-            "classification": normalize_sections(convert_to_latex(verdict_json.get("classification", ""))),
+            "claim": normalize_sections(escape_latex_special_chars(convert_to_latex(claim_text))),
+            "executive_summary": normalize_sections(escape_latex_special_chars(verdict_json.get("executive_summary", ""))),
+            "summary": normalize_sections(escape_latex_special_chars(verdict_json.get("summary", ""))),
+            "original_excerpt": normalize_sections(escape_latex_special_chars(verdict_json.get("original_excerpt", ""))),
+            "source_file": normalize_sections(escape_all_underscores(verdict_json.get("source_file", ""))),
+            "source_page": normalize_sections(str(verdict_json.get("source_page", ""))),
+            "verdict": normalize_sections(escape_latex_special_chars(verdict_json.get("verdict", ""))),
+            "classification": normalize_sections(escape_latex_special_chars(verdict_json.get("classification", ""))),
             # classification 추가 데이터
-            "justification": normalize_sections(convert_to_latex(verdict_json.get("justification", ""))),
+            "justification": normalize_sections(escape_latex_special_chars(verdict_json.get("justification", ""))),
             "scores": verdict_json.get("scores", {}),
-            # appendix 데이터는 이미 LaTeX 형식이므로 이스케이프 처리하지 않음
-            "lawyer_results": escape_all_underscores(normalize_sections(convert_to_latex(judge_input.get("lawyer_results", "").replace("\\", "\\")))),
-            "prosecutor_results": escape_all_underscores(normalize_sections(convert_to_latex(judge_input.get("prosecutor_results", "").replace("\\", "\\"))))
+            # appendix 데이터는 이미 처리된 상태
+            "lawyer_results": normalize_sections(judge_input.get("lawyer_results", "")),
+            "prosecutor_results": normalize_sections(judge_input.get("prosecutor_results", ""))
         }
 
         VerdictPdfService(context)

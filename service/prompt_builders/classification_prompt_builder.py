@@ -37,6 +37,11 @@ class ClassificationPromptBuilder:
         2. Format all chemical and scientific notation using LaTeX math mode:
         - CO₂ → CO$_2$, H₂O → H$_2$O, 10⁵ → 10$^5$
         - Never use Unicode subscripts or superscripts.
+        - Greek letters must be formatted in LaTeX:
+          • μ → $\\mu$, α → $\\alpha$, β → $\\beta$
+        - Special symbols should also use LaTeX:
+          • ± → $\\pm$, × → $\\times$, ÷ → $\\div$
+          • ≤ → $\\leq$, ≥ → $\\geq$, ≈ → $\\approx$
 
         ## Claim to Evaluate
         {claim}
@@ -55,7 +60,7 @@ class ClassificationPromptBuilder:
         - **Unsupported**: Not enough evidence to support or refute; often speculative or vague.
 
         ## Evaluation Criteria (1 = poor, 5 = excellent)
-        Rate the **claim itself** on the following dimensions. You are encouraged to use the full range of scores (1–5) to reflect variations in the claim’s merit.
+        Rate the **claim itself** on the following dimensions. You are encouraged to use the full range of scores (1–5) to reflect variations in the claim's merit.
 
         1. **Scientific Plausibility**  
         - **Score 5**: The claim aligns perfectly with established scientific consensus (e.g. clear IPCC position).  
@@ -88,7 +93,7 @@ class ClassificationPromptBuilder:
 
         1. Read the claim and the judge's verdict carefully.
         2. Identify the most relevant IPCC evidence from the list.
-        3. Evaluate the claim’s scientific and logical merit following the criteria above.
+        3. Evaluate the claim's scientific and logical merit following the criteria above.
         4. Assign scores for each dimension and choose one overall classification label.
         5. Provide a 3–5 sentence justification explaining your ratings and final classification.
 

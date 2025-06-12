@@ -12,6 +12,11 @@
 \usepackage{graphicx}
 \usepackage{tikz}
 \usepackage{multirow}
+\usepackage{textgreek}   % 그리스 문자 지원
+\usepackage{amsmath}     % 수학 기호
+\usepackage{amssymb}     % 추가 수학 기호
+\usepackage{upgreek}     % 그리스 문자의 직립체
+\usepackage{textcomp}    % 추가 텍스트 기호
 
 {% raw %}
 % 색상 정의
@@ -36,8 +41,10 @@
 \titleformat{\subsection}[hang]{\normalfont\large\bfseries\color{darkblue}}{}{0pt}{}
 \setcounter{secnumdepth}{0}
 
-% 파일명 표시
-\newcommand{\filename}[1]{{\ttfamily #1}}
+% 파일명 표시 (언더스코어 자동 이스케이프 + 자동 줄바꿈)
+\makeatletter
+\newcommand{\filename}[1]{{\ttfamily\let\do\@makeother\dospecials\texttt{#1}}}
+\makeatother
 
 % 점수 표시 막대
 \newcommand{\scorebar}[1]{%
@@ -101,27 +108,27 @@
 {{ justification }}
 \end{mdframed}
 
-{% if scores is defined %}
-\clearpage
-\subsection{Evaluation Scores}
-\begin{tabular}{lp{8cm}}
-{% if scores.scientific_plausibility is defined %}
-\textbf{Scientific Plausibility} & \scorebar{ {{ scores.scientific_plausibility }} } \\[0.2cm]
-{% endif %}
-{% if scores.logical_coherence is defined %}
-\textbf{Logical Coherence} & \scorebar{ {{ scores.logical_coherence }} } \\[0.2cm]
-{% endif %}
-{% if scores.scope_appropriateness is defined %}
-\textbf{Scope Appropriateness} & \scorebar{ {{ scores.scope_appropriateness }} } \\[0.2cm]
-{% endif %}
-{% if scores.causal_justification is defined %}
-\textbf{Causal Justification} & \scorebar{ {{ scores.causal_justification }} } \\[0.2cm]
-{% endif %}
-{% if scores.speculativeness is defined %}
-\textbf{Speculativeness} & \scorebar{ {{ scores.speculativeness }} } \\
-{% endif %}
+  {% if scores is defined %}
+  \clearpage
+  \subsection{Evaluation Scores}
+  \begin{tabular}{lp{8cm}}
+    {% if scores.scientific_plausibility is defined %}
+    \textbf{Scientific Plausibility} & \scorebar{ {{ scores.scientific_plausibility }} } \\[0.2cm]
+    {% endif %}
+    {% if scores.logical_coherence is defined %}
+    \textbf{Logical Coherence} & \scorebar{ {{ scores.logical_coherence }} } \\[0.2cm]
+    {% endif %}
+    {% if scores.scope_appropriateness is defined %}
+    \textbf{Scope Appropriateness} & \scorebar{ {{ scores.scope_appropriateness }} } \\[0.2cm]
+    {% endif %}
+    {% if scores.causal_justification is defined %}
+    \textbf{Causal Justification} & \scorebar{ {{ scores.causal_justification }} } \\[0.2cm]
+    {% endif %}
+    {% if scores.speculativeness is defined %}
+    \textbf{Speculativeness} & \scorebar{ {{ scores.speculativeness }} } \\
+    {% endif %}
+  {% endif %}
 \end{tabular}
-{% endif %}
 {% endif %}
 
 \section{Key Evidence}
@@ -135,7 +142,9 @@
 {{ original_excerpt }}
 
 \vspace{0.3cm}
+{% raw %}\makeatletter\let\do\@makeother\dospecials\catcode`\_=12{% endraw %}
 \textbf{Source:} \filename{ {{ source_file }} }, Page: {{ source_page }}
+{% raw %}\makeatother{% endraw %}
 \end{mdframed}
 
 \section{Verdict}

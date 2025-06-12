@@ -6,6 +6,9 @@ package controller {
   class MainController {
     +__init__()
     +run(claim, data_folder)
+    +convert_to_latex(text)
+    +sanitize_latex_items(text)
+    +sanitize_file_paths(text)
   }
 }
 
@@ -52,11 +55,21 @@ package service {
     +prepare_input(...)
     +decide(judge_input_path, model_type)
   }
+  class ClassificationService {
+    +classify(judge_input_path, model_type)
+  }
+  class VerdictPdfService {
+    +generate_pdf(context)
+    +sanitize_latex(text)
+    +fix_itemize(text)
+    +fix_filename(text)
+  }
 
   BaseAgentService <|-- LawyerService
   BaseAgentService <|-- ProsecutorService
   BaseAgentService <|-- JudgeService
-
+  BaseAgentService <|-- ClassificationService
+  
   RagIndexService ..> LLMModel
   QAService --> LLMModel
   JuryService --> RagIndexService
@@ -74,10 +87,18 @@ package service {
     class JudgePromptBuilder {
       +build_decision_prompt(...)
     }
+    class ClassificationPromptBuilder {
+      +build_classification_prompt(...)
+    }
+    class JuryCleanerPromptBuilder {
+      +build_cleaner_prompt(...)
+    }
   }
   LawyerService --> LawyerPromptBuilder
   ProsecutorService --> ProsecutorPromptBuilder
   JudgeService --> JudgePromptBuilder
+  ClassificationService --> ClassificationPromptBuilder
+  JuryCleanService --> JuryCleanerPromptBuilder
 }
 
 ' View 패키지
@@ -92,7 +113,7 @@ package view {
   }
 }
 
-' 의존 관계
+' 의존 관계 및 실행 흐름
 MainController --> ConsoleView
 MainController --> FileView
 MainController --> QAService
@@ -102,6 +123,15 @@ MainController --> JuryCleanService
 MainController --> LawyerService
 MainController --> ProsecutorService
 MainController --> JudgeService
+MainController --> ClassificationService
 MainController --> VerdictPdfService
+
+' 수정된 워크플로우
+note "1. 배심원단이 질문 평가 후 증거 수집" as N1
+note "2. 검사와 변호사가 배심원단 증거 분석" as N2
+note "3. 검사와 변호사가 상호 반박 준비" as N3
+note "4. 판사가 증거와 의견을 검토하여 판결" as N4
+note "5. 분류 전문가가 판결 검토 및 점수 매김" as N5
+note "6. PDF 보고서 생성" as N6
 
 @enduml
