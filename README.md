@@ -49,6 +49,7 @@ To address both the complexity of climate information and the accessibility chal
 > - Proposes a system of metrics (Accuracy, Misleading, Overgeneralization, Unsupported, Inaccurate) to identify false information and exaggerated or distorted interpretations.  
 </details>
 
+해당 프로젝트는 기개발하였던 easy-rag-llm 라이브러리에 의존합니다. (https://github.com/Aiden-Kwak/easy_rag_llm)
 
 
 
@@ -117,7 +118,7 @@ CLAIM="Global warming is not progressing as predicted by climate models. This is
 ```
 
 ## 4. UML
-<img src="docs/llm_puml2.png" width="900px">
+<img src="docs/llm_puml.png" width="900px">
 
 ## 5. Execution flow
 ```mermaid
